@@ -17,6 +17,7 @@
 
 @interface MRMapBaseView : UIView {
   @private
+	MRTileCache *_cache;
 	id < MRTileProvider > _tileProvider;
 }
 
@@ -120,8 +121,8 @@
 															  tileSize:[_tileProvider tileSize]];
 			zoom++;
 			
+			[self setCenter:coord animated:NO];
 			self.zoomLevel = zoom;
-			self.center = coord;
 		}
 	}
 }
@@ -202,6 +203,8 @@
 }
 
 - (void)configureLayer {
+	_cache = [MRTileCache sharedTileCache];
+	
 	CATiledLayer *tiledLayer = (CATiledLayer *) self.layer;
 	tiledLayer.levelsOfDetail = [_tileProvider maxZoomLevel];
 	tiledLayer.levelsOfDetailBias = [_tileProvider maxZoomLevel];
@@ -235,8 +238,7 @@
 	NSUInteger x = floor(crect.origin.x / crect.size.width);
 	NSUInteger y = floor(crect.origin.y / crect.size.width);
 	
-	MRTileCache *cache = [MRTileCache sharedTileCache];
-	UIImage *img = [cache tileAtX:x y:y zoomLevel:zoomLevel];
+	UIImage *img = [_cache tileAtX:x y:y zoomLevel:zoomLevel];
 	
 	if (img) {
 		[img drawInRect:crect];
@@ -252,7 +254,7 @@
 		[data release];
 		
 		[tileImage drawInRect:crect];
-		[cache setTile:tileImage x:x y:y zoomLevel:zoomLevel];
+		[_cache setTile:tileImage x:x y:y zoomLevel:zoomLevel];
 		
 		[tileImage release];
 	}

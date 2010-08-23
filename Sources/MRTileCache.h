@@ -6,8 +6,11 @@
 //
 
 @interface MRTileCache : NSObject {
-
+  @private
+	NSUInteger _maxCacheSize;
 }
+
+@property (assign) NSUInteger maxCacheSize; /* in tiles, default=2,000 */
 
 + (id)sharedTileCache;
 
