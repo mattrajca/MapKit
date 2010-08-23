@@ -20,6 +20,7 @@
 		C965CECE1222B2A3005CF012 /* MRMercatorProjection.m in Sources */ = {isa = PBXBuildFile; fileRef = C965CEC71222B2A3005CF012 /* MRMercatorProjection.m */; };
 		C965CECF1222B2A3005CF012 /* MROSMTileProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C965CEC91222B2A3005CF012 /* MROSMTileProvider.m */; };
 		C997167C1220C4AD00022812 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C997167B1220C4AD00022812 /* QuartzCore.framework */; };
+		C9B63CEF122326F40015C73E /* MRTileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B63CEE122326F40015C73E /* MRTileCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,8 @@
 		C965CECA1222B2A3005CF012 /* MRProjection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRProjection.h; sourceTree = "<group>"; };
 		C965CECB1222B2A3005CF012 /* MRTileProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRTileProvider.h; sourceTree = "<group>"; };
 		C997167B1220C4AD00022812 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C9B63CED122326F40015C73E /* MRTileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRTileCache.h; sourceTree = "<group>"; };
+		C9B63CEE122326F40015C73E /* MRTileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRTileCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +138,8 @@
 				C965CEC81222B2A3005CF012 /* MROSMTileProvider.h */,
 				C965CEC91222B2A3005CF012 /* MROSMTileProvider.m */,
 				C965CECA1222B2A3005CF012 /* MRProjection.h */,
+				C9B63CED122326F40015C73E /* MRTileCache.h */,
+				C9B63CEE122326F40015C73E /* MRTileCache.m */,
 				C965CECB1222B2A3005CF012 /* MRTileProvider.h */,
 			);
 			name = Sources;
@@ -220,6 +225,7 @@
 				C965CECD1222B2A3005CF012 /* MRMapView.m in Sources */,
 				C965CECE1222B2A3005CF012 /* MRMercatorProjection.m in Sources */,
 				C965CECF1222B2A3005CF012 /* MROSMTileProvider.m in Sources */,
+				C9B63CEF122326F40015C73E /* MRTileCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

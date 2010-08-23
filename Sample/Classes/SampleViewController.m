@@ -30,13 +30,14 @@
 }
 
 - (void)loadState {
-	_mapView.zoomLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"zoom"];
+	NSUInteger zoom = [[NSUserDefaults standardUserDefaults] integerForKey:@"zoom"];
+	[_mapView setZoomLevel:zoom animated:NO];
 	
 	MRMapCoordinate center;
 	center.latitude = [[NSUserDefaults standardUserDefaults] doubleForKey:@"centerLat"];
 	center.longitude = [[NSUserDefaults standardUserDefaults] doubleForKey:@"centerLng"];
 	
-	_mapView.center = center;
+	[_mapView setCenter:center animated:NO];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(saveState:)

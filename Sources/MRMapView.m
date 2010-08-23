@@ -11,6 +11,7 @@
 
 #import "MRMercatorProjection.h"
 #import "MRProjection.h"
+#import "MRTileCache.h"
 #import "MRTileProvider.h"
 
 
@@ -234,17 +235,27 @@
 	NSUInteger x = floor(crect.origin.x / crect.size.width);
 	NSUInteger y = floor(crect.origin.y / crect.size.width);
 	
-	NSURL *tileURL = [_tileProvider tileURLForTile:x y:y zoomLevel:zoomLevel];
-	NSData *data = [[NSData alloc] initWithContentsOfURL:tileURL];
+	MRTileCache *cache = [MRTileCache sharedTileCache];
+	UIImage *img = [cache tileAtX:x y:y zoomLevel:zoomLevel];
 	
-	if (!data)
-		return;
-	
-	UIImage *tileImage = [[UIImage alloc] initWithData:data];
-	[data release];
+	if (img) {
+		[img drawInRect:crect];
+	}
+	else {
+		NSURL *tileURL = [_tileProvider tileURLForTile:x y:y zoomLevel:zoomLevel];
+		NSData *data = [[NSData alloc] initWithContentsOfURL:tileURL];
 		
-	[tileImage drawInRect:crect];
-	[tileImage release];
+		if (!data)
+			return;
+		
+		UIImage *tileImage = [[UIImage alloc] initWithData:data];
+		[data release];
+		
+		[tileImage drawInRect:crect];
+		[cache setTile:tileImage x:x y:y zoomLevel:zoomLevel];
+		
+		[tileImage release];
+	}
 }
 
 @end
