@@ -18,7 +18,7 @@
 
 @implementation MRTileCache
 
-static NSString *const kTileKeyFormat = @"%d_%d_%d.jpg";
+static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 
 + (id)sharedTileCache {
 	static MRTileCache *sharedTileCache;
@@ -66,7 +66,7 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.jpg";
 }
 
 - (void)setTile:(UIImage *)img x:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
-	NSData *data = UIImageJPEGRepresentation(img, 0.8f);
+	NSData *data = UIImagePNGRepresentation(img);
 	
 	NSString *path = [self pathForTileAtX:x y:y zoomLevel:zoom];
 	[data writeToFile:path atomically:YES];
