@@ -1,5 +1,5 @@
 MapKit
-------
+======
 
 MapKit is an iOS 'library' for displaying tiled maps. While MKMapView has been bundled with iOS since version 3.0, it has lacked support for custom tile sources outside of Google Maps. While not a big issue for most developers, I have found some cool uses for displaying maps of Google Mars and Google Sky. Please be aware of licensing issues when using custom tile providers. I have only created this library as an exercise. The only built-in tile provider is OpenStreetMap. See [their page](http://wiki.openstreetmap.org/wiki/OpenStreetMap_License) for licensing information.
 
