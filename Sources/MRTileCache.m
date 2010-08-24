@@ -33,16 +33,6 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 
 #define kDefaultMaxCacheSize 1000
 
-+ (id)sharedTileCache {
-	static MRTileCache *sharedTileCache;
-	
-	if (!sharedTileCache) {
-		sharedTileCache = [[MRTileCache alloc] init];
-	}
-	
-	return sharedTileCache;
-}
-
 - (id)init {
 	self = [super init];
 	if (self) {

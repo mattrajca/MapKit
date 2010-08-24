@@ -201,7 +201,7 @@
 - (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
-		_cache = [MRTileCache sharedTileCache];
+		_cache = [MRTileCache new];
 		[_cache performFlush];
 	}
 	return self;
@@ -262,6 +262,12 @@
 	
 	[tileImage drawInRect:crect];
 	[tileImage release];
+}
+
+- (void)dealloc {
+	[_cache release];
+	
+	[super dealloc];
 }
 
 @end
