@@ -198,13 +198,20 @@
 
 @synthesize tileProvider;
 
+- (id)initWithFrame:(CGRect)frame {
+	self = [super initWithFrame:frame];
+	if (self) {
+		_cache = [MRTileCache sharedTileCache];
+		[_cache performFlush];
+	}
+	return self;
+}
+
 + (Class)layerClass {
 	return [CATiledLayer class];
 }
 
 - (void)configureLayer {
-	_cache = [MRTileCache sharedTileCache];
-	
 	CATiledLayer *tiledLayer = (CATiledLayer *) self.layer;
 	tiledLayer.levelsOfDetail = [_tileProvider maxZoomLevel];
 	tiledLayer.levelsOfDetailBias = [_tileProvider maxZoomLevel];
@@ -238,26 +245,23 @@
 	NSUInteger x = floor(crect.origin.x / crect.size.width);
 	NSUInteger y = floor(crect.origin.y / crect.size.width);
 	
-	UIImage *img = [_cache tileAtX:x y:y zoomLevel:zoomLevel];
+	NSData *tileData = [[_cache tileAtX:x y:y zoomLevel:zoomLevel] retain];
 	
-	if (img) {
-		[img drawInRect:crect];
-	}
-	else {
+	if (!tileData) {
 		NSURL *tileURL = [_tileProvider tileURLForTile:x y:y zoomLevel:zoomLevel];
-		NSData *data = [[NSData alloc] initWithContentsOfURL:tileURL];
+		tileData = [[NSData alloc] initWithContentsOfURL:tileURL];
 		
-		if (!data)
+		if (!tileData)
 			return;
 		
-		UIImage *tileImage = [[UIImage alloc] initWithData:data];
-		[data release];
-		
-		[tileImage drawInRect:crect];
-		[_cache setTile:tileImage x:x y:y zoomLevel:zoomLevel];
-		
-		[tileImage release];
+		[_cache setTile:tileData x:x y:y zoomLevel:zoomLevel];
 	}
+	
+	UIImage *tileImage = [[UIImage alloc] initWithData:tileData];
+	[tileData release];
+	
+	[tileImage drawInRect:crect];
+	[tileImage release];
 }
 
 @end

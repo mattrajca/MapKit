@@ -8,13 +8,22 @@
 @interface MRTileCache : NSObject {
   @private
 	NSUInteger _maxCacheSize;
+	NSString *_cacheDirectory;
+	BOOL _flushing;
 }
 
-@property (assign) NSUInteger maxCacheSize; /* in tiles, default=2,000 */
+@property (assign) NSUInteger maxCacheSize; /* in tiles, default=1,000 */
+@property (readonly) NSString *cacheDirectory;
 
 + (id)sharedTileCache;
 
-- (UIImage *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
-- (void)setTile:(UIImage *)img x:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
+// thread safe...
+- (NSData *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
+- (void)setTile:(NSData	*)data x:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
+
+/*
+ Dispatches a new thread and flushes old caches from the disk
+*/
+- (void)performFlush;
 
 @end
