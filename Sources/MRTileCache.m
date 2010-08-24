@@ -20,6 +20,8 @@
 
 - (void)flushCache;
 
+@property (readonly) BOOL flushing;
+
 @end
 
 
@@ -27,6 +29,7 @@
 
 @synthesize maxCacheSize = _maxCacheSize;
 @synthesize cacheDirectory = _cacheDirectory;
+@synthesize flushing = _flushing;
 
 static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
@@ -63,7 +66,8 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	NSFileManager *fm = [[NSFileManager alloc] init];
 	
 	if (![fm fileExistsAtPath:path isDirectory:NULL]) {
-		[fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+		[fm createDirectoryAtPath:path withIntermediateDirectories:YES
+					   attributes:nil error:nil];
 	}
 	
 	[fm release];
@@ -72,15 +76,15 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 }
 
 - (NSData *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
-	if (_flushing)
+	if (self.flushing)
 		return nil;
 	
-	NSFileManager *mgr = [[NSFileManager alloc] init];
+	NSFileManager *fm = [[NSFileManager alloc] init];
 	
 	NSString *path = [self pathForTileAtX:x y:y zoomLevel:zoom];
-	NSData *data = [mgr contentsAtPath:path];
+	NSData *data = [fm contentsAtPath:path];
 	
-	[mgr release];
+	[fm release];
 	
 	if (!data)
 		return nil;
@@ -89,7 +93,7 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 }
 
 - (void)setTile:(NSData *)data x:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
-	if (_flushing)
+	if (self.flushing)
 		return;
 	
 	NSString *path = [self pathForTileAtX:x y:y zoomLevel:zoom];
