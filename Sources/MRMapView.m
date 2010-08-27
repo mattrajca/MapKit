@@ -14,7 +14,6 @@
 #import "MRTileCache.h"
 #import "MRTileProvider.h"
 
-
 @interface MRMapBaseView : UIView {
   @private
 	MRTileCache *_cache;
@@ -24,6 +23,7 @@
 @property (nonatomic, assign) id < MRTileProvider > tileProvider;
 
 - (void)configureLayer;
+- (NSString *)cacheDirectory;
 
 @end
 
@@ -207,13 +207,46 @@
 
 @synthesize tileProvider;
 
+static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
+
+#define kDay 60 * 60 * 24
+
 - (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
-		_cache = [[MRTileCache alloc] init];
-		[_cache flushOldCaches];
+		_cache = [[MRTileCache alloc] initWithCacheDirectory:[self cacheDirectory]];
+		
+		NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+		NSDate *date = [defs valueForKey:kLastFlushedKey];
+		
+		if (!date || -[date timeIntervalSinceNow] > kDay) {
+			[_cache flushOldCaches];
+			
+			[defs setValue:[NSDate date] forKey:kLastFlushedKey];
+			[defs synchronize];
+		}
 	}
 	return self;
+}
+
+- (NSString *)cacheDirectory {
+	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+	
+	if (![dirs count])
+		return nil;
+	
+	NSString *path = [[dirs objectAtIndex:0] stringByAppendingPathComponent:@"Tiles"];
+	
+	NSFileManager *fm = [[NSFileManager alloc] init];
+	
+	if (![fm fileExistsAtPath:path isDirectory:NULL]) {
+		[fm createDirectoryAtPath:path withIntermediateDirectories:YES
+					   attributes:nil error:nil];
+	}
+	
+	[fm release];
+	
+	return path;
 }
 
 + (Class)layerClass {

@@ -15,6 +15,8 @@
 @property (assign) NSUInteger maxCacheSize; /* in tiles, default=1,000 */
 @property (readonly) NSString *cacheDirectory;
 
+- (id)initWithCacheDirectory:(NSString *)aPath;
+
 // thread safe...
 - (NSData *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
 - (void)setTile:(NSData	*)data x:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;

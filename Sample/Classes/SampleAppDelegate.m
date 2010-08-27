@@ -1,8 +1,8 @@
 //
-//  MapViewAppDelegate.m
-//  Sample
+//	MapViewAppDelegate.m
+//	Sample
 //
-//  Copyright Matt Rajca 2010. All rights reserved.
+//	Copyright Matt Rajca 2010. All rights reserved.
 //
 
 #import "SampleAppDelegate.h"

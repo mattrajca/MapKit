@@ -13,7 +13,6 @@
 
 - (NSString *)tileKeyForX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
 - (NSString *)pathForTileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
-- (NSString *)lcacheDirectory;
 
 - (NSDate *)modificationDateForItemAtPath:(NSString *)aPath;
 - (NSArray *)cacheContents;
@@ -32,16 +31,16 @@
 @synthesize flushing = _flushing;
 
 static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
-static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 
 #define kDefaultMaxCacheSize 1000
-#define kDay 60 * 60 * 24
 
-- (id)init {
+- (id)initWithCacheDirectory:(NSString *)aPath {
+	NSParameterAssert (aPath != nil);
+	
 	self = [super init];
 	if (self) {
 		self.maxCacheSize = kDefaultMaxCacheSize;
-		_cacheDirectory = [[self lcacheDirectory] retain];
+		_cacheDirectory = [aPath copy];
 	}
 	return self;
 }
@@ -54,26 +53,6 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	NSString *tileKey = [self tileKeyForX:x y:y zoomLevel:zoom];
 	
 	return [self.cacheDirectory stringByAppendingPathComponent:tileKey];
-}
-
-- (NSString *)lcacheDirectory {
-	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-	
-	if (![dirs count])
-		return nil;
-	
-	NSString *path = [[dirs objectAtIndex:0] stringByAppendingPathComponent:@"Tiles"];
-	
-	NSFileManager *fm = [[NSFileManager alloc] init];
-	
-	if (![fm fileExistsAtPath:path isDirectory:NULL]) {
-		[fm createDirectoryAtPath:path withIntermediateDirectories:YES
-					   attributes:nil error:nil];
-	}
-	
-	[fm release];
-	
-	return path;
 }
 
 - (NSData *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
@@ -167,30 +146,20 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	
 	_flushing = YES;
 	
-	NSUserDefaults *defs = [[NSUserDefaults alloc] init];
-	NSDate *date = [defs valueForKey:kLastFlushedKey];
+	NSFileManager *fm = [[NSFileManager alloc] init];
 	
-	if (!date || -[date timeIntervalSinceNow] > kDay) {
-		NSFileManager *fm = [[NSFileManager alloc] init];
-		
-		NSArray *contents = [self cacheContents];
-		NSUInteger count = [contents count];
-		
-		if (count >= _maxCacheSize) {
-			// free so we have 2/3 of the max size
-			for (NSUInteger n = 0; n < (count - (_maxCacheSize * 2 / 3)); n++) {
-				NSString *path = [[contents objectAtIndex:n] valueForKey:@"path"];
-				[fm removeItemAtPath:path error:nil];
-			}
+	NSArray *contents = [self cacheContents];
+	NSUInteger count = [contents count];
+	
+	if (count >= _maxCacheSize) {
+		// free so we have 2/3 of the max size
+		for (NSUInteger n = 0; n < (count - (_maxCacheSize * 2 / 3)); n++) {
+			NSString *path = [[contents objectAtIndex:n] valueForKey:@"path"];
+			[fm removeItemAtPath:path error:nil];
 		}
-		
-		[fm release];
-		
-		[defs setValue:[NSDate date] forKey:kLastFlushedKey];
-		[defs synchronize];
 	}
 	
-	[defs release];
+	[fm release];
 	
 	_flushing = NO;
 	
