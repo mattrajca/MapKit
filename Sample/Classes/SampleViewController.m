@@ -26,16 +26,21 @@
 	[super viewDidLoad];
 	
 	_mapView.tileProvider = [[MROSMTileProvider new] autorelease];
+	
 	[self loadState];
 }
 
 - (void)loadState {
-	NSUInteger zoom = [[NSUserDefaults standardUserDefaults] integerForKey:@"zoom"];
+	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+	[defs registerDefaults:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:1]
+													   forKey:@"zoom"]];
+	
+	NSUInteger zoom = [defs integerForKey:@"zoom"];
 	[_mapView setZoomLevel:zoom animated:NO];
 	
 	MRMapCoordinate center;
-	center.latitude = [[NSUserDefaults standardUserDefaults] doubleForKey:@"centerLat"];
-	center.longitude = [[NSUserDefaults standardUserDefaults] doubleForKey:@"centerLng"];
+	center.latitude = [defs doubleForKey:@"centerLat"];
+	center.longitude = [defs doubleForKey:@"centerLng"];
 	
 	[_mapView setCenter:center animated:NO];
 	

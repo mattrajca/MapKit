@@ -11,7 +11,6 @@
 
 - (NSUInteger)minZoomLevel;
 - (NSUInteger)maxZoomLevel;
-- (NSUInteger)defaultZoomLevel;
 
 - (CGSize)tileSize;
 

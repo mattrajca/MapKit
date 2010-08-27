@@ -60,7 +60,7 @@
 }
 
 - (id)initWithFrame:(CGRect)frame tileProvider:(id < MRTileProvider >)tileProvider {
-	NSParameterAssert(tileProvider != nil);
+	NSParameterAssert (tileProvider != nil);
 	
 	self = [self initWithFrame:frame];
 	if (self) {
@@ -81,9 +81,7 @@
 
 - (void)configureScrollView {
 	self.contentSize = [_tileProvider tileSize];
-	
-	// don't support zooming to zoom level 0 with a single 256x256 tile on purpose
-	self.minimumZoomScale = MRMapScaleFromZoomLevel([_tileProvider defaultZoomLevel]);
+	self.minimumZoomScale = 1.0f;
 	self.maximumZoomScale = MRMapScaleFromZoomLevel([_tileProvider maxZoomLevel]);
 	self.delegate = _tileProvider ? self : nil;
 }
@@ -99,6 +97,22 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 	
+	// center map if necessary
+	CGSize boundsSize = self.bounds.size;
+	CGRect frameToCenter = _baseView.frame;
+	
+	if (frameToCenter.size.width < boundsSize.width)
+		frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
+	else
+		frameToCenter.origin.x = 0;
+	
+	if (frameToCenter.size.height < boundsSize.height)
+		frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
+	else
+		frameToCenter.origin.y = 0;
+	
+	_baseView.frame = frameToCenter;
+
 	// Support higher resolution displays
 	_baseView.contentScaleFactor = 1.0f / [UIScreen mainScreen].scale;
 }
@@ -129,19 +143,14 @@
 
 - (void)setTileProvider:(id < MRTileProvider > )prov {
 	if (_tileProvider != prov) {
-		[self willChangeValueForKey:@"tileProvider"];
-		
 		[_tileProvider release];
 		_tileProvider = [prov retain];
-		
-		[self didChangeValueForKey:@"tileProvider"];
 		
 		[self configureScrollView];
 		[self configureLayers];
 		
 		_baseView.tileProvider = _tileProvider;
 		
-		[self setZoomLevel:[_tileProvider defaultZoomLevel] animated:NO];
 		[self setCenter:MRMapCoordinateMake(0, 0) animated:NO];
 	}
 }
@@ -201,8 +210,8 @@
 - (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
-		_cache = [MRTileCache new];
-		[_cache performFlush];
+		_cache = [[MRTileCache alloc] init];
+		[_cache flushOldCaches];
 	}
 	return self;
 }

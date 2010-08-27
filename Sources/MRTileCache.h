@@ -19,9 +19,7 @@
 - (NSData *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
 - (void)setTile:(NSData	*)data x:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
 
-/*
- Dispatches a new thread and flushes old caches from the disk
-*/
-- (void)performFlush;
+// Dispatches a new thread and flushes old caches from the disk
+- (void)flushOldCaches;
 
 @end

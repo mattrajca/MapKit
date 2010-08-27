@@ -25,10 +25,6 @@
 	return 18;
 }
 
-- (NSUInteger)defaultZoomLevel {
-	return 1;
-}
-
 - (CGSize)tileSize {
 	return CGSizeMake(256.0f, 256.0f);
 }

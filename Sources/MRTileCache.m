@@ -18,7 +18,7 @@
 - (NSDate *)modificationDateForItemAtPath:(NSString *)aPath;
 - (NSArray *)cacheContents;
 
-- (void)flushCache;
+- (void)flushCachesThread;
 
 @property (readonly) BOOL flushing;
 
@@ -35,6 +35,7 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 
 #define kDefaultMaxCacheSize 1000
+#define kDay 60 * 60 * 24
 
 - (id)init {
 	self = [super init];
@@ -154,13 +155,14 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	return files;
 }
 
-- (void)performFlush {
-	[NSThread detachNewThreadSelector:@selector(flushCache) toTarget:self withObject:nil];
+- (void)flushOldCaches {
+	if (self.flushing)
+		return;
+	
+	[NSThread detachNewThreadSelector:@selector(flushCachesThread) toTarget:self withObject:nil];
 }
 
-#define kDay 60 * 60 * 24
-
-- (void)flushCache {
+- (void)flushCachesThread {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	_flushing = YES;
