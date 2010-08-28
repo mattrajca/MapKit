@@ -89,6 +89,7 @@
 - (void)configureLayers {
 	if (!_baseView) {
 		_baseView = [[MRMapBaseView alloc] initWithFrame:[self bounds]];
+		_baseView.multipleTouchEnabled = YES;
 		
 		[self insertSubview:_baseView atIndex:0];
 	}
@@ -122,11 +123,13 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+	[super touchesEnded:touches withEvent:event];
+	
 	UITouch *touch = [touches anyObject];
-
-	if (touch.tapCount == 2) {
-		NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
-		
+	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
+	
+	if ([touches count] == 1 && touch.tapCount == 2) {
+		// zoom in
 		if (zoom < [_tileProvider maxZoomLevel]) {
 			CGPoint pt = [touch locationInView:self];
 			
@@ -137,6 +140,12 @@
 			
 			[self setCenter:coord animated:NO];
 			self.zoomLevel = zoom;
+		}
+	}
+	else if ([touches count] == 2 && touch.tapCount == 1) {
+		// zoom out
+		if (zoom > [_tileProvider minZoomLevel]) {
+			self.zoomLevel = --zoom;
 		}
 	}
 }
