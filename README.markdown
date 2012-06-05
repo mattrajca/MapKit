@@ -13,7 +13,7 @@ To use MapKit in your project, simply drag the contents of the `Sources` folder 
 License
 -------
 
-Copyright (c) 2010-2011 Matt Rajca
+Copyright (c) 2010-2012 Matt Rajca
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
