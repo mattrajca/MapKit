@@ -76,7 +76,7 @@
 	self.scrollsToTop = NO;
 	self.bounces = NO;
 	
-	self.mapProjection = [[MRMercatorProjection new] autorelease];
+	self.mapProjection = [MRMercatorProjection new];
 }
 
 - (void)configureScrollView {
@@ -152,8 +152,7 @@
 
 - (void)setTileProvider:(id < MRTileProvider > )prov {
 	if (_tileProvider != prov) {
-		[_tileProvider release];
-		_tileProvider = [prov retain];
+		_tileProvider = prov;
 		
 		[self configureScrollView];
 		[self configureLayers];
@@ -202,11 +201,6 @@
 }
 
 - (void)dealloc {
-	[_baseView release];
-	[_tileProvider release];
-	[_mapProjection release];
-	
-	[super dealloc];
 }
 
 @end
@@ -253,8 +247,6 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 					   attributes:nil error:nil];
 	}
 	
-	[fm release];
-	
 	return path;
 }
 
@@ -296,7 +288,7 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	NSUInteger x = floor(crect.origin.x / crect.size.width);
 	NSUInteger y = floor(crect.origin.y / crect.size.width);
 	
-	NSData *tileData = [[_cache tileAtX:x y:y zoomLevel:zoomLevel] retain];
+	NSData *tileData = [_cache tileAtX:x y:y zoomLevel:zoomLevel];
 	
 	if (!tileData) {
 		NSURL *tileURL = [_tileProvider tileURLForTile:x y:y zoomLevel:zoomLevel];
@@ -309,16 +301,11 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	}
 	
 	UIImage *tileImage = [[UIImage alloc] initWithData:tileData];
-	[tileData release];
 	
 	[tileImage drawInRect:crect];
-	[tileImage release];
 }
 
 - (void)dealloc {
-	[_cache release];
-	
-	[super dealloc];
 }
 
 @end

@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	_mapView.tileProvider = [[MROSMTileProvider new] autorelease];
+	_mapView.tileProvider = [MROSMTileProvider new];
 	
 	[self loadState];
 }
@@ -76,9 +76,6 @@
 }
 
 - (void)dealloc {
-	[_mapView release];
-	
-    [super dealloc];
 }
 
 @end
