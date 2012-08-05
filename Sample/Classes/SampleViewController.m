@@ -8,7 +8,7 @@
 #import "SampleViewController.h"
 
 #import "MRMapView.h"
-#import "MROSMTileProvider.h"
+#import "MRMQOTileProvider.h"
 
 @interface SampleViewController ()
 
@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	_mapView.tileProvider = [MROSMTileProvider new];
+	_mapView.tileProvider = [MRMQOTileProvider new];
 	
 	[self loadState];
 }

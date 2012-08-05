@@ -15,6 +15,7 @@
 		2899E5220DE3E06400AC0155 /* SampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* SampleViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* SampleViewController.m */; };
+		83FFBEB515CE046C009A64FA /* MRMQOTileProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */; };
 		C965CECC1222B2A3005CF012 /* MRMapTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C965CEC31222B2A3005CF012 /* MRMapTypes.m */; };
 		C965CECD1222B2A3005CF012 /* MRMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = C965CEC51222B2A3005CF012 /* MRMapView.m */; };
 		C965CECE1222B2A3005CF012 /* MRMercatorProjection.m in Sources */ = {isa = PBXBuildFile; fileRef = C965CEC71222B2A3005CF012 /* MRMercatorProjection.m */; };
@@ -36,6 +37,8 @@
 		28D7ACF70DDB3853001CB0EB /* SampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Sample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample_Prefix.pch; sourceTree = "<group>"; };
+		83FFBEB315CE046C009A64FA /* MRMQOTileProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMQOTileProvider.h; sourceTree = "<group>"; };
+		83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMQOTileProvider.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Sample-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Sample-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		C965CEC21222B2A3005CF012 /* MRMapTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMapTypes.h; sourceTree = "<group>"; };
 		C965CEC31222B2A3005CF012 /* MRMapTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMapTypes.m; sourceTree = "<group>"; };
@@ -141,6 +144,8 @@
 				C9B63CED122326F40015C73E /* MRTileCache.h */,
 				C9B63CEE122326F40015C73E /* MRTileCache.m */,
 				C965CECB1222B2A3005CF012 /* MRTileProvider.h */,
+				83FFBEB315CE046C009A64FA /* MRMQOTileProvider.h */,
+				83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */,
 			);
 			name = Sources;
 			path = ../Sources;
@@ -229,6 +234,7 @@
 				C965CECE1222B2A3005CF012 /* MRMercatorProjection.m in Sources */,
 				C965CECF1222B2A3005CF012 /* MROSMTileProvider.m in Sources */,
 				C9B63CEF122326F40015C73E /* MRTileCache.m in Sources */,
+				83FFBEB515CE046C009A64FA /* MRMQOTileProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
