@@ -101,6 +101,7 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 	NSTimeInterval tz = [[NSTimeZone systemTimeZone] secondsFromGMT];
 	
 	NSDate *modificationDate = [[cal dateFromComponents:comps] dateByAddingTimeInterval:tz];
+
 	return modificationDate;
 }
 
@@ -152,9 +153,6 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 	}
 	
 	_flushing = NO;
-}
-
-- (void)dealloc {
 }
 
 @end

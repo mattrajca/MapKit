@@ -20,7 +20,4 @@
 	return YES;
 }
 
-- (void)dealloc {
-}
-
 @end

@@ -75,7 +75,4 @@
 	_mapView.center = MRMapCoordinateMake(41.85f, -87.65f);
 }
 
-- (void)dealloc {
-}
-
 @end

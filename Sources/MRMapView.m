@@ -200,9 +200,6 @@
 	[self setContentOffset:pt animated:anim];
 }
 
-- (void)dealloc {
-}
-
 @end
 
 
@@ -246,7 +243,7 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 		[fm createDirectoryAtPath:path withIntermediateDirectories:YES
 					   attributes:nil error:nil];
 	}
-	
+
 	return path;
 }
 
@@ -301,11 +298,8 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	}
 	
 	UIImage *tileImage = [[UIImage alloc] initWithData:tileData];
-	
-	[tileImage drawInRect:crect];
-}
 
-- (void)dealloc {
+	[tileImage drawInRect:crect];
 }
 
 @end
