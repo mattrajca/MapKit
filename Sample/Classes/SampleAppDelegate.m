@@ -14,8 +14,7 @@
 @synthesize window, viewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[window addSubview:viewController.view];
-	[window makeKeyAndVisible];
+    [window setRootViewController:viewController];
 	
 	return YES;
 }
