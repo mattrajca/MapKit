@@ -120,7 +120,7 @@
 				8D1107310486CEB800E47090 /* Sample-Info.plist */,
 				2899E5210DE3E06400AC0155 /* SampleViewController.xib */,
 			);
-			name = Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
@@ -261,7 +261,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sample_Prefix.pch;
-				INFOPLIST_FILE = "Sample-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Resources/Sample-Info.plist";
 				PRODUCT_NAME = Sample;
 			};
 			name = Debug;
@@ -274,7 +274,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sample_Prefix.pch;
-				INFOPLIST_FILE = "Sample-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Resources/Sample-Info.plist";
 				PRODUCT_NAME = Sample;
 				VALIDATE_PRODUCT = YES;
 			};
