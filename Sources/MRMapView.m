@@ -59,11 +59,20 @@
 }
 
 - (id)initWithFrame:(CGRect)frame tileProvider:(id < MRTileProvider >)tileProvider {
+    if((self = [self initWithFrame:frame])) {
+        self.tileProvider = tileProvider;
+    }
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame tileProvider:(id < MRTileProvider >)tileProvider mapProjection:(id < MRProjection >)mapProjection {
 	NSParameterAssert (tileProvider != nil);
-	
+	NSParameterAssert (mapProjection != nil);
+
 	self = [self initWithFrame:frame];
 	if (self) {
 		self.tileProvider = tileProvider;
+        self.mapProjection = mapProjection;
 	}
 	return self;
 }
