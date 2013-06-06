@@ -276,7 +276,7 @@
                                                          andOffset:[self getOffset]];
 
         UIView<MRPin> *pin = [_pinProvider newPinForIdentifier:[NSDate date] withCoordinates:coord];
-
+        pin.center = location;
         [self addSubview:pin];
     }
 }
