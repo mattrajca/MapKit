@@ -88,20 +88,14 @@
 	self.bounces = NO;
 
     UITapGestureRecognizer *zoomInGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomIn:)];
-    zoomInGestureRecognizer.numberOfTouchesRequired = 1;
     zoomInGestureRecognizer.numberOfTapsRequired = 2;
     [self addGestureRecognizer:zoomInGestureRecognizer];
 
     UITapGestureRecognizer *zoomOutGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomOut:)];
     zoomOutGestureRecognizer.numberOfTouchesRequired = 2;
-    zoomOutGestureRecognizer.numberOfTapsRequired = 1;
     [self addGestureRecognizer:zoomOutGestureRecognizer];
 
     UILongPressGestureRecognizer *addPinGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addPin:)];
-    addPinGestureRecognizer.numberOfTouchesRequired = 1;
-    addPinGestureRecognizer.numberOfTapsRequired = 0;
-    addPinGestureRecognizer.minimumPressDuration = 0.5;
-    addPinGestureRecognizer.allowableMovement = 20;
     [self addGestureRecognizer:addPinGestureRecognizer];
 }
 
