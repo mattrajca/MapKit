@@ -9,6 +9,7 @@
 #import "MRBuiltinPinProvider.h"
 #import "MRPin.h"
 #import "MRMapTypes.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation MRBuiltinPin
 
@@ -36,10 +37,12 @@
 
 -(UIView<MRPin> *)newPinForIdentifier:(id<NSCopying>)identifier withCoordinates:(MRMapCoordinate)coordinates
 {
+    NSLog(@"Creating a new pin.");
     UIView<MRPin> *newPin = [_pinClass new];
 
-    newPin.frame = CGRectMake(200, 200, 100, 100);
-    newPin.backgroundColor = [UIColor redColor];
+    newPin.frame = CGRectMake(200, 200, 64, 104);
+    newPin.layer.anchorPoint = CGPointMake(7.0 / 64.0, 45.0 / 104.0);
+    newPin.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"CurrentLocationPin"]];
 
     [_pinStore setObject:newPin forKey:identifier];
     [_coordStore setObject:MRMapCoordinateToValue(coordinates) forKey:identifier];

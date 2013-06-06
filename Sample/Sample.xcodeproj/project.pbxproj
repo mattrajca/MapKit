@@ -15,6 +15,7 @@
 		2899E5220DE3E06400AC0155 /* SampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* SampleViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* SampleViewController.m */; };
+		584DAB7D1760CD1A000AA1CD /* CurrentLocationPin.png in Resources */ = {isa = PBXBuildFile; fileRef = 584DAB7C1760CD1A000AA1CD /* CurrentLocationPin.png */; };
 		58F8CF081760809400F81960 /* MRBuiltinPinProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8CF071760809400F81960 /* MRBuiltinPinProvider.m */; };
 		83FFBEB515CE046C009A64FA /* MRMQOTileProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */; };
 		C965CECC1222B2A3005CF012 /* MRMapTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C965CEC31222B2A3005CF012 /* MRMapTypes.m */; };
@@ -38,6 +39,7 @@
 		28D7ACF70DDB3853001CB0EB /* SampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Sample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample_Prefix.pch; sourceTree = "<group>"; };
+		584DAB7C1760CD1A000AA1CD /* CurrentLocationPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CurrentLocationPin.png; sourceTree = "<group>"; };
 		58F8CF0517607CC500F81960 /* MRPinProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRPinProvider.h; sourceTree = "<group>"; };
 		58F8CF061760809400F81960 /* MRBuiltinPinProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBuiltinPinProvider.h; sourceTree = "<group>"; };
 		58F8CF071760809400F81960 /* MRBuiltinPinProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBuiltinPinProvider.m; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Sample-Info.plist */,
 				2899E5210DE3E06400AC0155 /* SampleViewController.xib */,
+				584DAB7C1760CD1A000AA1CD /* CurrentLocationPin.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* SampleViewController.xib in Resources */,
+				584DAB7D1760CD1A000AA1CD /* CurrentLocationPin.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

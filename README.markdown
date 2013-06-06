@@ -10,6 +10,11 @@ Usage
 
 To use MapKit in your project, simply drag the contents of the `Sources` folder into your Xcode project.
 
+Attributions
+------------
+
+Using pin clipart from [SweetClipart.com](http://sweetclipart.com/)
+
 License
 -------
 
