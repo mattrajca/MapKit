@@ -83,6 +83,16 @@
 	self.showsVerticalScrollIndicator = NO;
 	self.scrollsToTop = NO;
 	self.bounces = NO;
+
+    UITapGestureRecognizer *zoomInGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomIn:)];
+    zoomInGestureRecognizer.numberOfTouchesRequired = 1;
+    zoomInGestureRecognizer.numberOfTapsRequired = 2;
+    [self addGestureRecognizer:zoomInGestureRecognizer];
+
+    UITapGestureRecognizer *zoomOutGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomOut:)];
+    zoomOutGestureRecognizer.numberOfTouchesRequired = 2;
+    zoomOutGestureRecognizer.numberOfTapsRequired = 1;
+    [self addGestureRecognizer:zoomOutGestureRecognizer];
 }
 
 - (void)configureScrollView {
@@ -147,34 +157,6 @@
 	return _baseView;
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	[super touchesEnded:touches withEvent:event];
-	
-	UITouch *touch = [touches anyObject];
-	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
-	
-	if ([touches count] == 1 && touch.tapCount == 2) {
-		// zoom in
-		if (zoom < [_tileProvider maxZoomLevel]) {
-            MRMapCoordinate coord = [_mapProjection coordinateForPoint:[touch locationInView:self]
-                                                             zoomScale:self.zoomScale
-                                                           contentSize:self.contentSize
-                                                              tileSize:[_tileProvider tileSize]
-                                                             andOffset:[self getOffset]];
-			zoom++;
-			
-			[self setCenter:coord animated:NO];
-			self.zoomLevel = zoom;
-		}
-	}
-	else if ([touches count] == 2 && touch.tapCount == 1) {
-		// zoom out
-		if (zoom > [_tileProvider minZoomLevel]) {
-			self.zoomLevel = --zoom;
-		}
-	}
-}
-
 - (void)setTileProvider:(id < MRTileProvider > )prov {
 	if (_tileProvider != prov) {
 		_tileProvider = prov;
@@ -228,6 +210,41 @@
 	pt.y -= self.bounds.size.height / 2;
 	
 	[self setContentOffset:pt animated:anim];
+}
+
+@end
+
+@implementation MRMapView (gestures)
+
+-(void)zoomIn:(UITapGestureRecognizer *)recognizer {
+    CGPoint location = [recognizer locationInView:self];
+	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
+
+    if (zoom < [_tileProvider maxZoomLevel]) {
+        MRMapCoordinate coord = [_mapProjection coordinateForPoint:location
+                                                         zoomScale:self.zoomScale
+                                                       contentSize:self.contentSize
+                                                          tileSize:[_tileProvider tileSize]
+                                                         andOffset:[self getOffset]];
+        self.zoomLevel = ++zoom;
+        [self setCenter:coord animated:NO];
+    }
+}
+
+-(void)zoomOut:(UITapGestureRecognizer *)recognizer {
+    CGPoint location = [recognizer locationInView:self];
+	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
+
+    // zoom out
+    if (zoom > [_tileProvider minZoomLevel]) {
+        MRMapCoordinate coord = [_mapProjection coordinateForPoint:location
+                                                         zoomScale:self.zoomScale
+                                                       contentSize:self.contentSize
+                                                          tileSize:[_tileProvider tileSize]
+                                                         andOffset:[self getOffset]];
+        self.zoomLevel = --zoom;
+        [self setCenter:coord animated:NO];
+    }
 }
 
 @end
