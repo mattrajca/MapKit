@@ -6,12 +6,29 @@
 //
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "MRBuiltinPinProvider.h"
 #import "MRPin.h"
 #import "MRMapTypes.h"
-#import <QuartzCore/QuartzCore.h>
 
 @implementation MRBuiltinPin
+
+-(id)init
+{
+    if((self = [super init]))
+    {
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(drag:)];
+        longPressGesture.delegate = self;
+        [self addGestureRecognizer:longPressGesture];
+    }
+    return self;
+}
+
+-(void)drag:(UILongPressGestureRecognizer *)recognizer
+{
+    NSLog(@"Long press drag!");
+}
 
 @end
 

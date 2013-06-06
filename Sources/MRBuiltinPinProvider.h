@@ -11,7 +11,7 @@
 
 #import "MRPinProvider.h"
 
-@interface MRBuiltinPin : UIView <MRPin>
+@interface MRBuiltinPin : UIView <MRPin, UIGestureRecognizerDelegate>
 
 @end
 
