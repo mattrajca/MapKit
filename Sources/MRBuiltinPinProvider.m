@@ -30,7 +30,17 @@
 
 -(void)drag:(UILongPressGestureRecognizer *)recognizer
 {
-    NSLog(@"Long press drag!");
+    if(recognizer.state == UIGestureRecognizerStateChanged) {
+        CGPoint location = [recognizer locationInView:[self superview]];
+        location.y -= 50;
+        self.center = location;
+    }
+    else if(recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateRecognized) {
+        NSLog(@"drag else");
+
+        id<NSCopying> identifier = [self.provider identifierForPin:self];
+        [self.provider updatePinMethod](identifier, self.center);
+    }
 }
 
 @end
@@ -81,6 +91,18 @@
 -(UIView<MRPin> *)pinForIdentifier:(id<NSCopying>)identifier
 {
     return [_pinStore objectForKey:identifier];
+}
+
+-(id<NSCopying>)identifierForPin:(UIView<MRPin> *)somePin
+{
+    for(id<NSCopying>identifier in [_pinStore keyEnumerator]) {
+        UIView<MRPin> *pin = [_pinStore objectForKey:identifier];
+        if(pin == somePin) {
+            return identifier;
+        }
+    }
+
+    return nil;
 }
 
 -(MRMapCoordinate)coordinateForIdentifier:(id<NSCopying>)identifier

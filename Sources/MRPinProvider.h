@@ -18,6 +18,7 @@
 -(UIView<MRPin> *)newPinForIdentifier:(id<NSCopying>)identifier withCoordinates:(MRMapCoordinate)coordinates;
 -(void)addPin:(UIView<MRPin> *)pin forIdentifier:(id<NSCopying>)identifier withCoordinates:(MRMapCoordinate)coordinates;
 -(UIView<MRPin> *)pinForIdentifier:(id<NSCopying>)identifier;
+-(id<NSCopying>)identifierForPin:(UIView<MRPin> *)pin;
 -(MRMapCoordinate)coordinateForIdentifier:(id<NSCopying>)identifier;
 -(void)updatePin:(id<NSCopying>)identifier withCoordinates:(MRMapCoordinate)coordinates;
 -(void)removePin:(id<NSCopying>)identifier;
