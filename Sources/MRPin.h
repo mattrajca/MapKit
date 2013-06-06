@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "MRMapTypes.h"
 
+@protocol MRPinProvider;
+
 @protocol MRPin <NSObject>
+
+@property (nonatomic, assign) id<MRPinProvider> provider;
 
 @end

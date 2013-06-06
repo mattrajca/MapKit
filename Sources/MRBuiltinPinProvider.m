@@ -11,8 +11,11 @@
 #import "MRBuiltinPinProvider.h"
 #import "MRPin.h"
 #import "MRMapTypes.h"
+#import "MRPinProvider.h"
 
 @implementation MRBuiltinPin
+
+@synthesize provider=_provider;
 
 -(id)init
 {
@@ -58,6 +61,7 @@
     NSLog(@"Creating a new pin.");
     UIView<MRPin> *newPin = [_pinClass new];
 
+    newPin.provider = self;
     newPin.frame = CGRectMake(0, 0, 64, 104);
     newPin.layer.anchorPoint = CGPointMake(7.0 / 64.0, 45.0 / 104.0);
     newPin.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"CurrentLocationPin"]];
