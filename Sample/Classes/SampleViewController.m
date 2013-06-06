@@ -11,6 +11,7 @@
 
 #import "MRMQOTileProvider.h"
 #import "MRMercatorProjection.h"
+#import "MRBuiltinPinProvider.h"
 
 @interface SampleViewController ()
 
@@ -29,6 +30,7 @@
 	
 	_mapView.tileProvider = [MRMQOTileProvider new];
 	_mapView.mapProjection = [MRMercatorProjection new];
+    _mapView.pinProvider = [MRBuiltinPinProvider new];
 
 	[self loadState];
 }
