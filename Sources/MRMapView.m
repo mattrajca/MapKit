@@ -191,12 +191,7 @@
 	pt.x += self.bounds.size.width / 2;
 	pt.y += self.bounds.size.height / 2;
 	
-    return [_mapProjection coordinateForPoint:pt
-                                    zoomScale:self.zoomScale
-                                  contentSize:self.contentSize
-                                     tileSize:[_tileProvider tileSize]
-                                    andOffset:[self getOffset]];
-
+    return [self coordinateForPoint:pt];
 }
 
 - (void)setCenter:(MRMapCoordinate)coord {
@@ -204,11 +199,7 @@
 }
 
 - (void)setCenter:(MRMapCoordinate)coord animated:(BOOL)anim {
-	CGPoint pt = [_mapProjection scaledPointForCoordinate:coord
-                                                zoomScale:self.zoomScale
-                                              contentSize:self.contentSize
-                                                 tileSize:[_tileProvider tileSize]
-                                                andOffset:[self getOffset]];
+	CGPoint pt = [self scaledPointForCoordinate:coord];
 
 	pt.x -= self.bounds.size.width / 2;
 	pt.y -= self.bounds.size.height / 2;
@@ -223,12 +214,26 @@
         UIView<MRPin> *pin = [_pinProvider pinForIdentifier:identifier];
         MRMapCoordinate coord = [_pinProvider coordinateForIdentifier:identifier];
 
-        pin.center = [_mapProjection scaledPointForCoordinate:coord
-                                                    zoomScale:self.zoomScale
-                                                  contentSize:self.contentSize
-                                                     tileSize:[_tileProvider tileSize]
-                                                    andOffset:[self getOffset]];
+        pin.center = [self scaledPointForCoordinate:coord];
     }
+}
+
+-(CGPoint)scaledPointForCoordinate:(MRMapCoordinate)coord
+{
+    return [_mapProjection scaledPointForCoordinate:coord
+                                          zoomScale:self.zoomScale
+                                        contentSize:self.contentSize
+                                           tileSize:[_tileProvider tileSize]
+                                          andOffset:[self getOffset]];
+}
+
+-(MRMapCoordinate)coordinateForPoint:(CGPoint)point
+{
+    return [_mapProjection coordinateForPoint:point
+                             zoomScale:self.zoomScale
+                           contentSize:self.contentSize
+                              tileSize:[_tileProvider tileSize]
+                             andOffset:[self getOffset]];
 }
 
 @end
@@ -240,11 +245,7 @@
 	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
 
     if (zoom < [_tileProvider maxZoomLevel]) {
-        MRMapCoordinate coord = [_mapProjection coordinateForPoint:location
-                                                         zoomScale:self.zoomScale
-                                                       contentSize:self.contentSize
-                                                          tileSize:[_tileProvider tileSize]
-                                                         andOffset:[self getOffset]];
+        MRMapCoordinate coord = [self coordinateForPoint:location];
         self.zoomLevel = ++zoom;
         [self setCenter:coord animated:NO];
     }
@@ -256,11 +257,7 @@
 
     // zoom out
     if (zoom > [_tileProvider minZoomLevel]) {
-        MRMapCoordinate coord = [_mapProjection coordinateForPoint:location
-                                                         zoomScale:self.zoomScale
-                                                       contentSize:self.contentSize
-                                                          tileSize:[_tileProvider tileSize]
-                                                         andOffset:[self getOffset]];
+        MRMapCoordinate coord = [self coordinateForPoint:location];
         self.zoomLevel = --zoom;
         [self setCenter:coord animated:NO];
     }
@@ -269,11 +266,7 @@
 -(void)addPin:(UILongPressGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint location = [recognizer locationInView:self];
-        MRMapCoordinate coord = [_mapProjection coordinateForPoint:location
-                                                         zoomScale:self.zoomScale
-                                                       contentSize:self.contentSize
-                                                          tileSize:[_tileProvider tileSize]
-                                                         andOffset:[self getOffset]];
+        MRMapCoordinate coord = [self coordinateForPoint:location];
 
         UIView<MRPin> *pin = [_pinProvider newPinForIdentifier:[NSDate date] withCoordinates:coord];
         pin.center = location;
