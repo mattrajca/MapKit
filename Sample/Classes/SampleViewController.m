@@ -8,7 +8,9 @@
 #import "SampleViewController.h"
 
 #import "MRMapView.h"
+
 #import "MRMQOTileProvider.h"
+#import "MRMercatorProjection.h"
 
 @interface SampleViewController ()
 
@@ -26,7 +28,8 @@
 	[super viewDidLoad];
 	
 	_mapView.tileProvider = [MRMQOTileProvider new];
-	
+	_mapView.mapProjection = [MRMercatorProjection new];
+
 	[self loadState];
 }
 

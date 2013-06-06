@@ -9,7 +9,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "MRMercatorProjection.h"
 #import "MRProjection.h"
 #import "MRTileCache.h"
 #import "MRTileProvider.h"
@@ -75,8 +74,6 @@
 	self.showsVerticalScrollIndicator = NO;
 	self.scrollsToTop = NO;
 	self.bounces = NO;
-	
-	self.mapProjection = [MRMercatorProjection new];
 }
 
 - (void)configureScrollView {
