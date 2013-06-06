@@ -18,3 +18,15 @@ NSUInteger MRMapZoomLevelFromScale (NSUInteger scale) {
 NSUInteger MRMapScaleFromZoomLevel (NSUInteger zoomLevel) {
 	return pow(2, zoomLevel);
 }
+
+NSValue *MRMapCoordinateToValue(MRMapCoordinate loc) {
+    NSValue *r = [NSValue value:&loc withObjCType:@encode(MRMapCoordinate)];
+    return r;
+}
+
+MRMapCoordinate MRMapCoordinateFromValue(NSValue *value) {
+    MRMapCoordinate r;
+    [value getValue:&r];
+
+    return r;
+}
