@@ -24,6 +24,10 @@ NSValue *MRMapCoordinateToValue(MRMapCoordinate loc) {
     return r;
 }
 
+NSString *NSStringFromMRMapCoordinate(MRMapCoordinate loc) {
+    return [NSString stringWithFormat:@"<MRMapCoordinate: %f, %f>", loc.latitude, loc.longitude];
+}
+
 MRMapCoordinate MRMapCoordinateFromValue(NSValue *value) {
     MRMapCoordinate r;
     [value getValue:&r];

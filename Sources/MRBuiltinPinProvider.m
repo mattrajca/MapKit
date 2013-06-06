@@ -40,7 +40,7 @@
     NSLog(@"Creating a new pin.");
     UIView<MRPin> *newPin = [_pinClass new];
 
-    newPin.frame = CGRectMake(200, 200, 64, 104);
+    newPin.frame = CGRectMake(0, 0, 64, 104);
     newPin.layer.anchorPoint = CGPointMake(7.0 / 64.0, 45.0 / 104.0);
     newPin.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"CurrentLocationPin"]];
 
