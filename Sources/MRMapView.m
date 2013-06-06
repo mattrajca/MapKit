@@ -12,6 +12,8 @@
 #import "MRProjection.h"
 #import "MRTileCache.h"
 #import "MRTileProvider.h"
+#import "MRPinProvider.h"
+#import "MRPin.h"
 
 @interface MRMapBaseView : UIView {
   @private
@@ -40,6 +42,7 @@
 
 @synthesize tileProvider = _tileProvider;
 @synthesize mapProjection = _mapProjection;
+@synthesize pinProvider = _pinProvider;
 @dynamic center, zoomLevel;
 
 - (id)initWithFrame:(CGRect)frame {
@@ -93,6 +96,13 @@
     zoomOutGestureRecognizer.numberOfTouchesRequired = 2;
     zoomOutGestureRecognizer.numberOfTapsRequired = 1;
     [self addGestureRecognizer:zoomOutGestureRecognizer];
+
+    UILongPressGestureRecognizer *addPinGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addPin:)];
+    addPinGestureRecognizer.numberOfTouchesRequired = 1;
+    addPinGestureRecognizer.numberOfTapsRequired = 0;
+    addPinGestureRecognizer.minimumPressDuration = 0.5;
+    addPinGestureRecognizer.allowableMovement = 20;
+    [self addGestureRecognizer:addPinGestureRecognizer];
 }
 
 - (void)configureScrollView {
@@ -212,6 +222,21 @@
 	[self setContentOffset:pt animated:anim];
 }
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    for(id<NSCopying> identifier in [_pinProvider allPinIdentifiers])
+    {
+        UIView<MRPin> *pin = [_pinProvider pinForIdentifier:identifier];
+        MRMapCoordinate coord = [_pinProvider coordinateForIdentifier:identifier];
+
+        pin.center = [_mapProjection scaledPointForCoordinate:coord
+                                                    zoomScale:self.zoomScale
+                                                  contentSize:self.contentSize
+                                                     tileSize:[_tileProvider tileSize]
+                                                    andOffset:[self getOffset]];
+    }
+}
+
 @end
 
 @implementation MRMapView (gestures)
@@ -244,6 +269,21 @@
                                                          andOffset:[self getOffset]];
         self.zoomLevel = --zoom;
         [self setCenter:coord animated:NO];
+    }
+}
+
+-(void)addPin:(UILongPressGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        CGPoint location = [recognizer locationInView:self];
+        MRMapCoordinate coord = [_mapProjection coordinateForPoint:location
+                                                         zoomScale:self.zoomScale
+                                                       contentSize:self.contentSize
+                                                          tileSize:[_tileProvider tileSize]
+                                                         andOffset:[self getOffset]];
+
+        UIView<MRPin> *pin = [_pinProvider newPinForIdentifier:[NSDate date] withCoordinates:coord];
+
+        [self addSubview:pin];
     }
 }
 
