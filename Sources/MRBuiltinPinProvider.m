@@ -35,6 +35,7 @@
 @implementation MRBuiltinPinProvider
 
 @synthesize pinClass = _pinClass;
+@synthesize updatePinMethod = _updatePinMethod;
 
 -(id)init
 {

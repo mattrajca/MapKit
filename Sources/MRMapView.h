@@ -48,4 +48,7 @@
 - (void)setCenter:(MRMapCoordinate)coord animated:(BOOL)anim;
 - (void)setZoomLevel:(NSUInteger)zoom animated:(BOOL)anim;
 
+-(CGPoint)scaledPointForCoordinate:(MRMapCoordinate)coordinate;
+-(MRMapCoordinate)coordinateForPoint:(CGPoint)point;
+
 @end

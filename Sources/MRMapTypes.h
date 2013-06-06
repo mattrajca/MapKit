@@ -23,3 +23,5 @@ NSUInteger MRMapScaleFromZoomLevel (NSUInteger zoomLevel);
 NSValue *MRMapCoordinateToValue(MRMapCoordinate loc);
 MRMapCoordinate MRMapCoordinateFromValue(NSValue *value);
 NSString *NSStringFromMRMapCoordinate(MRMapCoordinate loc);
+
+typedef void(^MRUpdatePinCoordinateWithPoint)(id<NSCopying>, CGPoint);

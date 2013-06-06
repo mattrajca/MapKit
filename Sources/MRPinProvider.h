@@ -13,6 +13,8 @@
 
 @protocol MRPinProvider <NSObject>
 
+@property (nonatomic, copy) MRUpdatePinCoordinateWithPoint updatePinMethod;
+
 -(UIView<MRPin> *)newPinForIdentifier:(id<NSCopying>)identifier withCoordinates:(MRMapCoordinate)coordinates;
 -(void)addPin:(UIView<MRPin> *)pin forIdentifier:(id<NSCopying>)identifier withCoordinates:(MRMapCoordinate)coordinates;
 -(UIView<MRPin> *)pinForIdentifier:(id<NSCopying>)identifier;
