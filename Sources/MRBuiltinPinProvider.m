@@ -32,7 +32,7 @@
 {
     if(recognizer.state == UIGestureRecognizerStateBegan) {
         CGPoint location = [recognizer locationInView:[self superview]];
-        touchOffsetFromCenter = CGPointMake(self.center.x - location.x, self.center.y - location.y - (25 / [UIScreen mainScreen].scale) );
+        touchOffsetFromCenter = CGPointMake(self.center.x - location.x, self.center.y - location.y - (25 * [UIScreen mainScreen].scale) );
 
         location.x += touchOffsetFromCenter.x;
         location.y += touchOffsetFromCenter.y;
