@@ -24,6 +24,8 @@
 	id < MRTileProvider > _tileProvider;
 	id < MRProjection > _mapProjection;
     id < MRPinProvider > _pinProvider;
+
+    id < NSCopying > _addPin_newIdentifier;
 }
 
 /*
