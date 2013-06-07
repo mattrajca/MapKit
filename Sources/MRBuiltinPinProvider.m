@@ -79,7 +79,7 @@
     return [_pinStore allKeys];
 }
 
--(UIView<MRPin> *)newPinForIdentifier:(id<NSCopying>)identifier withCoordinates:(MRMapCoordinate)coordinates
+-(UIView<MRPin> *)newPinForIdentifier:(id<NSCopying>)identifier
 {
     NSLog(@"Creating a new pin.");
     UIView<MRPin> *newPin = [_pinClass new];
@@ -90,6 +90,13 @@
     newPin.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"CurrentLocationPin"]];
 
     [_pinStore setObject:newPin forKey:identifier];
+
+    return newPin;
+}
+
+-(UIView<MRPin> *)newPinForIdentifier:(id<NSCopying>)identifier withCoordinates:(MRMapCoordinate)coordinates
+{
+    UIView<MRPin> *newPin = [self newPinForIdentifier:identifier];
     [_coordStore setObject:MRMapCoordinateToValue(coordinates) forKey:identifier];
 
     return newPin;
