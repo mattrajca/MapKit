@@ -12,6 +12,10 @@
 #import "MRPinProvider.h"
 
 @interface MRBuiltinPin : UIView <MRPin, UIGestureRecognizerDelegate>
+{
+    @private
+    CGPoint touchOffsetFromCenter;
+}
 
 @end
 

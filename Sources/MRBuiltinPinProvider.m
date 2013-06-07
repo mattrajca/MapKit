@@ -30,17 +30,30 @@
 
 -(void)drag:(UILongPressGestureRecognizer *)recognizer
 {
-    if(recognizer.state == UIGestureRecognizerStateChanged) {
+    if(recognizer.state == UIGestureRecognizerStateBegan) {
         CGPoint location = [recognizer locationInView:[self superview]];
-        location.y -= 50;
+        touchOffsetFromCenter = CGPointMake(self.center.x - location.x, self.center.y - location.y - (25 / [UIScreen mainScreen].scale) );
+
+        location.x += touchOffsetFromCenter.x;
+        location.y += touchOffsetFromCenter.y;
+
+        [UIView beginAnimations:@"liftPin" context:nil];
+        [UIView setAnimationDuration:0.15];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        self.center = location;
+        [UIView commitAnimations];
+    }
+    else if(recognizer.state == UIGestureRecognizerStateChanged) {
+        CGPoint location = [recognizer locationInView:[self superview]];
+        location.x += touchOffsetFromCenter.x;
+        location.y += touchOffsetFromCenter.y;
         self.center = location;
     }
     else if(recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateRecognized) {
-        NSLog(@"drag else");
-
         id<NSCopying> identifier = [self.provider identifierForPin:self];
         [self.provider updatePinMethod](identifier, self.center);
     }
+
 }
 
 @end
