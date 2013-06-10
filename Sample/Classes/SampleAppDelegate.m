@@ -19,4 +19,14 @@
 	return YES;
 }
 
+-(void)applicationWillResignActive:(UIApplication *)application
+{
+    [viewController applicationWillResignActive];
+}
+
+-(void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [viewController applicationDidBecomeActive];
+}
+
 @end

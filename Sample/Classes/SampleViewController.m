@@ -48,9 +48,26 @@
         MRBuiltinGPSDotProvider *gpsDotProvider = [MRBuiltinGPSDotProvider new];
         [_mapView addArtifactController:gpsDotProvider];
         [_mapView startUpdatingLocation];
+        _state.isTrackingLocation = YES;
     }
 
 	[self loadState];
+}
+
+-(void)applicationWillResignActive
+{
+    if(_state.isTrackingLocation)
+    {
+        [_mapView stopUpdatingLocation];
+    }
+}
+
+-(void)applicationDidBecomeActive
+{
+    if(_state.isTrackingLocation)
+    {
+        [_mapView startUpdatingLocation];
+    }
 }
 
 - (void)loadState {

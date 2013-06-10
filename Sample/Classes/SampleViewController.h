@@ -7,13 +7,22 @@
 
 @class MRMapView;
 
+typedef struct {
+    BOOL isTrackingLocation;
+} SampleViewControllerState;
+
 @interface SampleViewController : UIViewController {
   @private
 	MRMapView *_mapView;
+
+    SampleViewControllerState _state;
 }
 
 @property (nonatomic, retain) IBOutlet MRMapView *mapView;
 
 - (IBAction)locateChicago:(id)sender;
+
+-(void)applicationWillResignActive;
+-(void)applicationDidBecomeActive;
 
 @end
