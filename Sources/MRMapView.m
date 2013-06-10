@@ -207,7 +207,7 @@
 	[self setContentOffset:pt animated:anim];
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
     for(id<NSCopying> identifier in [_pinProvider allPinIdentifiers])
     {
