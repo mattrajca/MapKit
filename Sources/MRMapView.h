@@ -5,6 +5,8 @@
 //  Copyright Matt Rajca 2010. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
+
 #import "MRMapTypes.h"
 
 @class MRMapBaseView;
@@ -17,7 +19,7 @@
   The QuartzCore framework must also be linked against in order to use MRMapView
 */
 
-@interface MRMapView : UIScrollView < UIScrollViewDelegate, UIGestureRecognizerDelegate > {
+@interface MRMapView : UIScrollView < UIScrollViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate > {
   @private
 	MRMapBaseView *_baseView;
 	
@@ -25,6 +27,8 @@
 	id < MRProjection > _mapProjection;
 
     NSMutableArray *artifactControllers;
+
+    CLLocationManager *_locationManager;
 }
 
 /*
@@ -49,5 +53,8 @@
 
 -(void)addArtifactController:(id<MRArtifactController>)artifactController;
 -(void)removeArtifactController:(id<MRArtifactController>)artifactController;
+
+-(void)startUpdatingLocation;
+-(void)stopUpdatingLocation;
 
 @end

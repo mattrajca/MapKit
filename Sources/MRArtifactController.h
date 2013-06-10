@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class CLLocation;
+
 @class MRMapView;
 
 @protocol MRArtifactController <NSObject>
@@ -21,5 +23,7 @@
 
 -(void)registerGesturesInMapView:(MRMapView *)mapView;
 -(void)unregisterGesturesInMapView:(MRMapView *)mapView;
+
+-(void)mapView:(MRMapView *)mapView didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
 
 @end

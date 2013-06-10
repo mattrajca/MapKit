@@ -96,6 +96,9 @@
     [self addGestureRecognizer:zoomOutGestureRecognizer];
 
     artifactControllers = [[NSMutableArray alloc] init];
+
+    _locationManager = [CLLocationManager new];
+    _locationManager.delegate = self;
 }
 
 - (void)configureScrollView {
@@ -252,6 +255,16 @@
     [artifactControllers removeObject:artifactController];
 }
 
+-(void)startUpdatingLocation
+{
+    [_locationManager startUpdatingLocation];
+}
+
+-(void)stopUpdatingLocation
+{
+    [_locationManager stopUpdatingLocation];
+}
+
 @end
 
 @implementation MRMapView (gestures)
@@ -276,6 +289,21 @@
         MRMapCoordinate coord = [self coordinateForPoint:location];
         self.zoomLevel = --zoom;
         [self setCenter:coord animated:NO];
+    }
+}
+
+@end
+
+@implementation MRMapView (locationManagerCallbacks)
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    for(id<MRArtifactController> artifactController in artifactControllers)
+    {
+        if([artifactController respondsToSelector:@selector(mapView:didUpdateToLocation:fromLocation:)])
+        {
+            [artifactController mapView:self didUpdateToLocation:newLocation fromLocation:oldLocation];
+        }
     }
 }
 
