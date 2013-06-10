@@ -152,6 +152,10 @@
 		5825BD791765BE910007528C /* Artifact Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				58F8CF0C1760829C00F81960 /* MRPin.h */,
+				58F8CF0517607CC500F81960 /* MRPinProvider.h */,
+				58F8CF061760809400F81960 /* MRBuiltinPinProvider.h */,
+				58F8CF071760809400F81960 /* MRBuiltinPinProvider.m */,
 			);
 			name = "Artifact Controllers";
 			sourceTree = "<group>";
@@ -171,10 +175,6 @@
 				C9B63CED122326F40015C73E /* MRTileCache.h */,
 				C9B63CEE122326F40015C73E /* MRTileCache.m */,
 				C965CECB1222B2A3005CF012 /* MRTileProvider.h */,
-				58F8CF0517607CC500F81960 /* MRPinProvider.h */,
-				58F8CF061760809400F81960 /* MRBuiltinPinProvider.h */,
-				58F8CF071760809400F81960 /* MRBuiltinPinProvider.m */,
-				58F8CF0C1760829C00F81960 /* MRPin.h */,
 				5825BD761765B9680007528C /* MRArtifactController.h */,
 			);
 			name = Sources;
