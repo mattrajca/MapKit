@@ -12,6 +12,7 @@
 #import "MRMQOTileProvider.h"
 #import "MRMercatorProjection.h"
 #import "MRBuiltinPinProvider.h"
+#import "MRBuiltinGPSDotProvider.h"
 
 @interface SampleViewController ()
 
@@ -43,8 +44,15 @@
         };
     }
 
+    {
+        MRBuiltinGPSDotProvider *gpsDotProvider = [MRBuiltinGPSDotProvider new];
+        [_mapView addArtifactController:gpsDotProvider];
+        [_mapView startUpdatingLocation];
+    }
+
 	[self loadState];
 }
+
 
 - (void)loadState {
 	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];

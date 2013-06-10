@@ -5,6 +5,8 @@
 //  Copyright Matt Rajca 2010. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
+
 #import "MRMapTypes.h"
 
 @class MRMapBaseView;
@@ -17,15 +19,30 @@
   The QuartzCore framework must also be linked against in order to use MRMapView
 */
 
-@interface MRMapView : UIScrollView < UIScrollViewDelegate, UIGestureRecognizerDelegate > {
+#define MRMapViewStartTrackingLocation @"MRMapViewStartTrackingLocation"
+#define MRMapViewStopTrackingLocation @"MRMapViewStopTrackingLocation"
+
+typedef struct {
+    BOOL isSuspended;
+    BOOL isTracking;
+} MapViewState;
+
+@interface MRMapView : UIScrollView < UIScrollViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate > {
   @private
+    MapViewState _state;
+
 	MRMapBaseView *_baseView;
 	
 	id < MRTileProvider > _tileProvider;
 	id < MRProjection > _mapProjection;
 
     NSMutableArray *artifactControllers;
+
+    CLLocationManager *_locationManager;
 }
+
++(void)mapsShouldStartTracking;
++(void)mapsShouldStopTracking;
 
 /*
   If you don't use the appropriate initWith... method, the following properties will be nil. They MUST be set in order to display any tiles.
@@ -49,5 +66,8 @@
 
 -(void)addArtifactController:(id<MRArtifactController>)artifactController;
 -(void)removeArtifactController:(id<MRArtifactController>)artifactController;
+
+-(void)startUpdatingLocation;
+-(void)stopUpdatingLocation;
 
 @end
