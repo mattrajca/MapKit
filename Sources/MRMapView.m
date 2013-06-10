@@ -12,6 +12,8 @@
 #import "MRProjection.h"
 #import "MRTileCache.h"
 #import "MRTileProvider.h"
+#import "MRPinProvider.h"
+#import "MRPin.h"
 
 @interface MRMapBaseView : UIView {
   @private
@@ -40,6 +42,7 @@
 
 @synthesize tileProvider = _tileProvider;
 @synthesize mapProjection = _mapProjection;
+@synthesize pinProvider = _pinProvider;
 @dynamic center, zoomLevel;
 
 - (id)initWithFrame:(CGRect)frame {
@@ -85,14 +88,15 @@
 	self.bounces = NO;
 
     UITapGestureRecognizer *zoomInGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomIn:)];
-    zoomInGestureRecognizer.numberOfTouchesRequired = 1;
     zoomInGestureRecognizer.numberOfTapsRequired = 2;
     [self addGestureRecognizer:zoomInGestureRecognizer];
 
     UITapGestureRecognizer *zoomOutGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomOut:)];
     zoomOutGestureRecognizer.numberOfTouchesRequired = 2;
-    zoomOutGestureRecognizer.numberOfTapsRequired = 1;
     [self addGestureRecognizer:zoomOutGestureRecognizer];
+
+    UILongPressGestureRecognizer *addPinGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addPin:)];
+    [self addGestureRecognizer:addPinGestureRecognizer];
 }
 
 - (void)configureScrollView {
@@ -187,12 +191,7 @@
 	pt.x += self.bounds.size.width / 2;
 	pt.y += self.bounds.size.height / 2;
 	
-    return [_mapProjection coordinateForPoint:pt
-                                    zoomScale:self.zoomScale
-                                  contentSize:self.contentSize
-                                     tileSize:[_tileProvider tileSize]
-                                    andOffset:[self getOffset]];
-
+    return [self coordinateForPoint:pt];
 }
 
 - (void)setCenter:(MRMapCoordinate)coord {
@@ -200,16 +199,41 @@
 }
 
 - (void)setCenter:(MRMapCoordinate)coord animated:(BOOL)anim {
-	CGPoint pt = [_mapProjection scaledPointForCoordinate:coord
-                                                zoomScale:self.zoomScale
-                                              contentSize:self.contentSize
-                                                 tileSize:[_tileProvider tileSize]
-                                                andOffset:[self getOffset]];
+	CGPoint pt = [self scaledPointForCoordinate:coord];
 
 	pt.x -= self.bounds.size.width / 2;
 	pt.y -= self.bounds.size.height / 2;
 	
 	[self setContentOffset:pt animated:anim];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    for(id<NSCopying> identifier in [_pinProvider allPinIdentifiers])
+    {
+        UIView<MRPin> *pin = [_pinProvider pinForIdentifier:identifier];
+        MRMapCoordinate coord = [_pinProvider coordinateForIdentifier:identifier];
+
+        pin.center = [self scaledPointForCoordinate:coord];
+    }
+}
+
+-(CGPoint)scaledPointForCoordinate:(MRMapCoordinate)coord
+{
+    return [_mapProjection scaledPointForCoordinate:coord
+                                          zoomScale:self.zoomScale
+                                        contentSize:self.contentSize
+                                           tileSize:[_tileProvider tileSize]
+                                          andOffset:[self getOffset]];
+}
+
+-(MRMapCoordinate)coordinateForPoint:(CGPoint)point
+{
+    return [_mapProjection coordinateForPoint:point
+                             zoomScale:self.zoomScale
+                           contentSize:self.contentSize
+                              tileSize:[_tileProvider tileSize]
+                             andOffset:[self getOffset]];
 }
 
 @end
@@ -221,11 +245,7 @@
 	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
 
     if (zoom < [_tileProvider maxZoomLevel]) {
-        MRMapCoordinate coord = [_mapProjection coordinateForPoint:location
-                                                         zoomScale:self.zoomScale
-                                                       contentSize:self.contentSize
-                                                          tileSize:[_tileProvider tileSize]
-                                                         andOffset:[self getOffset]];
+        MRMapCoordinate coord = [self coordinateForPoint:location];
         self.zoomLevel = ++zoom;
         [self setCenter:coord animated:NO];
     }
@@ -237,13 +257,36 @@
 
     // zoom out
     if (zoom > [_tileProvider minZoomLevel]) {
-        MRMapCoordinate coord = [_mapProjection coordinateForPoint:location
-                                                         zoomScale:self.zoomScale
-                                                       contentSize:self.contentSize
-                                                          tileSize:[_tileProvider tileSize]
-                                                         andOffset:[self getOffset]];
+        MRMapCoordinate coord = [self coordinateForPoint:location];
         self.zoomLevel = --zoom;
         [self setCenter:coord animated:NO];
+    }
+}
+
+-(void)addPin:(UILongPressGestureRecognizer *)recognizer {
+    CGPoint dragOffset = [[_pinProvider pinClass] dragOffset];
+
+    CGPoint location = [recognizer locationInView:self];
+    location.x -= dragOffset.x;
+    location.y -= dragOffset.y;
+
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        NSAssert(_addPin_newIdentifier == nil, @"MRMapView: _addPin_newIdentifier != nil, addPin already in progress?");
+
+        _addPin_newIdentifier = [NSDate date];
+        UIView<MRPin> *pin = [_pinProvider newPinForIdentifier:_addPin_newIdentifier];
+        pin.center = location;
+        [self addSubview:pin];
+    }
+    else if (recognizer.state == UIGestureRecognizerStateChanged) {
+        UIView<MRPin> *pin = [_pinProvider pinForIdentifier:_addPin_newIdentifier];
+        pin.center = location;
+    }
+    else if (recognizer.state == UIGestureRecognizerStateEnded) {
+        UIView<MRPin> *pin = [_pinProvider pinForIdentifier:_addPin_newIdentifier];
+        MRMapCoordinate coord = [self coordinateForPoint:pin.center];
+        [_pinProvider updatePin:_addPin_newIdentifier withCoordinates:coord];
+        _addPin_newIdentifier = nil;
     }
 }
 
