@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "MRPin.h"
 #import "MRPinProvider.h"
 
 @interface MRBuiltinPin : UIView <MRPin, UIGestureRecognizerDelegate>

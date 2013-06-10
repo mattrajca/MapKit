@@ -9,9 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "MRBuiltinPinProvider.h"
-#import "MRPin.h"
 #import "MRMapTypes.h"
-#import "MRPinProvider.h"
+#import "MRMapView.h"
 
 @implementation MRBuiltinPin
 
@@ -171,6 +170,17 @@
 
     [_pinStore removeObjectForKey:identifier];
     [_coordStore removeObjectForKey:identifier];
+}
+
+-(void)updateArtifactsInMapView:(MRMapView *)mapView
+{
+    for(id<NSCopying> identifier in [self allPinIdentifiers])
+    {
+        UIView<MRPin> *pin = [self pinForIdentifier:identifier];
+        MRMapCoordinate coord = [self coordinateForIdentifier:identifier];
+
+        pin.center = [mapView scaledPointForCoordinate:coord];
+    }
 }
 
 @end

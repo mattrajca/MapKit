@@ -32,6 +32,7 @@
 	_mapView.mapProjection = [MRMercatorProjection new];
     MRBuiltinPinProvider *pinProvider = [MRBuiltinPinProvider new];
     _mapView.pinProvider = pinProvider;
+    [_mapView addArtifactController:pinProvider];
 
     __weak MRMapView *weakMapView = _mapView;
     __weak MRBuiltinPinProvider *weakPinProvider = pinProvider;

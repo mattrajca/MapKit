@@ -8,7 +8,7 @@
 #import "MRMapTypes.h"
 
 @class MRMapBaseView;
-@protocol MRTileProvider, MRProjection, MRPinProvider;
+@protocol MRTileProvider, MRProjection, MRPinProvider, MRArtifactController;
 
 /*
   NOTE: MRMapView sets itself as the delegate of its UIScrollView superclass
@@ -26,6 +26,8 @@
     id < MRPinProvider > _pinProvider;
 
     id < NSCopying > _addPin_newIdentifier;
+
+    NSMutableArray *artifactControllers;
 }
 
 /*
@@ -52,5 +54,8 @@
 
 -(CGPoint)scaledPointForCoordinate:(MRMapCoordinate)coordinate;
 -(MRMapCoordinate)coordinateForPoint:(CGPoint)point;
+
+-(void)addArtifactController:(id<MRArtifactController>)artifactController;
+-(void)removeArtifactController:(id<MRArtifactController>)artifactController;
 
 @end

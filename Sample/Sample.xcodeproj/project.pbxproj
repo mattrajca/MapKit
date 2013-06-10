@@ -39,6 +39,7 @@
 		28D7ACF70DDB3853001CB0EB /* SampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Sample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample_Prefix.pch; sourceTree = "<group>"; };
+		5825BD761765B9680007528C /* MRArtifactController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRArtifactController.h; sourceTree = "<group>"; };
 		584DAB7C1760CD1A000AA1CD /* CurrentLocationPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CurrentLocationPin.png; sourceTree = "<group>"; };
 		58F8CF0517607CC500F81960 /* MRPinProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRPinProvider.h; sourceTree = "<group>"; };
 		58F8CF061760809400F81960 /* MRBuiltinPinProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBuiltinPinProvider.h; sourceTree = "<group>"; };
@@ -137,27 +138,44 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5825BD781765BE7E0007528C /* Tile Providers */ = {
+			isa = PBXGroup;
+			children = (
+				C965CEC81222B2A3005CF012 /* MROSMTileProvider.h */,
+				C965CEC91222B2A3005CF012 /* MROSMTileProvider.m */,
+				83FFBEB315CE046C009A64FA /* MRMQOTileProvider.h */,
+				83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */,
+			);
+			name = "Tile Providers";
+			sourceTree = "<group>";
+		};
+		5825BD791765BE910007528C /* Artifact Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Artifact Controllers";
+			sourceTree = "<group>";
+		};
 		C965CEC11222B2A3005CF012 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				5825BD791765BE910007528C /* Artifact Controllers */,
+				5825BD781765BE7E0007528C /* Tile Providers */,
 				C965CEC21222B2A3005CF012 /* MRMapTypes.h */,
 				C965CEC31222B2A3005CF012 /* MRMapTypes.m */,
 				C965CEC41222B2A3005CF012 /* MRMapView.h */,
 				C965CEC51222B2A3005CF012 /* MRMapView.m */,
 				C965CEC61222B2A3005CF012 /* MRMercatorProjection.h */,
 				C965CEC71222B2A3005CF012 /* MRMercatorProjection.m */,
-				C965CEC81222B2A3005CF012 /* MROSMTileProvider.h */,
-				C965CEC91222B2A3005CF012 /* MROSMTileProvider.m */,
 				C965CECA1222B2A3005CF012 /* MRProjection.h */,
 				C9B63CED122326F40015C73E /* MRTileCache.h */,
 				C9B63CEE122326F40015C73E /* MRTileCache.m */,
 				C965CECB1222B2A3005CF012 /* MRTileProvider.h */,
-				83FFBEB315CE046C009A64FA /* MRMQOTileProvider.h */,
-				83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */,
 				58F8CF0517607CC500F81960 /* MRPinProvider.h */,
 				58F8CF061760809400F81960 /* MRBuiltinPinProvider.h */,
 				58F8CF071760809400F81960 /* MRBuiltinPinProvider.m */,
 				58F8CF0C1760829C00F81960 /* MRPin.h */,
+				5825BD761765B9680007528C /* MRArtifactController.h */,
 			);
 			name = Sources;
 			path = ../Sources;

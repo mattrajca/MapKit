@@ -9,6 +9,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "MRArtifactController.h"
 #import "MRProjection.h"
 #import "MRTileCache.h"
 #import "MRTileProvider.h"
@@ -97,6 +98,8 @@
 
     UILongPressGestureRecognizer *addPinGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addPin:)];
     [self addGestureRecognizer:addPinGestureRecognizer];
+
+    artifactControllers = [[NSMutableArray alloc] init];
 }
 
 - (void)configureScrollView {
@@ -209,12 +212,9 @@
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
-    for(id<NSCopying> identifier in [_pinProvider allPinIdentifiers])
+    for(id<MRArtifactController> artifactController in artifactControllers)
     {
-        UIView<MRPin> *pin = [_pinProvider pinForIdentifier:identifier];
-        MRMapCoordinate coord = [_pinProvider coordinateForIdentifier:identifier];
-
-        pin.center = [self scaledPointForCoordinate:coord];
+        [artifactController updateArtifactsInMapView:self];
     }
 }
 
@@ -234,6 +234,16 @@
                            contentSize:self.contentSize
                               tileSize:[_tileProvider tileSize]
                              andOffset:[self getOffset]];
+}
+
+-(void)addArtifactController:(id<MRArtifactController>)artifactController
+{
+    [artifactControllers addObject:artifactController];
+}
+
+-(void)removeArtifactController:(id<MRArtifactController>)artifactController
+{
+    [artifactControllers removeObject:artifactController];
 }
 
 @end
