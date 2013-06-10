@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "MRPin.h"
 #import "MRPinProvider.h"
 
 @interface MRBuiltinPin : UIView <MRPin, UIGestureRecognizerDelegate>
@@ -31,6 +32,9 @@
 {
     NSMutableDictionary *_pinStore;
     NSMutableDictionary *_coordStore;
+    @private
+    id < NSCopying > _addPin_newIdentifier;
+    UILongPressGestureRecognizer *addPinGestureRecognizer;
 }
 
 @end

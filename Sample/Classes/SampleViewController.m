@@ -30,15 +30,18 @@
 	
 	_mapView.tileProvider = [MRMQOTileProvider new];
 	_mapView.mapProjection = [MRMercatorProjection new];
-    MRBuiltinPinProvider *pinProvider = [MRBuiltinPinProvider new];
-    _mapView.pinProvider = pinProvider;
 
-    __weak MRMapView *weakMapView = _mapView;
-    __weak MRBuiltinPinProvider *weakPinProvider = pinProvider;
-    pinProvider.updatePinMethod = ^(id<NSCopying> identifier, CGPoint newPoint) {
-        MRMapCoordinate coord = [weakMapView coordinateForPoint:newPoint];
-        [weakPinProvider updatePin:identifier withCoordinates:coord];
-    };
+    { // Set up Pin provider
+        MRBuiltinPinProvider *pinProvider = [MRBuiltinPinProvider new];
+        [_mapView addArtifactController:pinProvider];
+
+        __weak MRMapView *weakMapView = _mapView;
+        __weak MRBuiltinPinProvider *weakPinProvider = pinProvider;
+        pinProvider.updatePinMethod = ^(id<NSCopying> identifier, CGPoint newPoint) {
+            MRMapCoordinate coord = [weakMapView coordinateForPoint:newPoint];
+            [weakPinProvider updatePin:identifier withCoordinates:coord];
+        };
+    }
 
 	[self loadState];
 }

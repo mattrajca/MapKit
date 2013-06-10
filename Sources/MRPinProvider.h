@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MRArtifactController.h"
+
 #import "MRMapTypes.h"
 #import "MRPin.h"
 
-@protocol MRPinProvider <NSObject>
+@protocol MRPinProvider <NSObject, MRArtifactController>
 
 @property (nonatomic, retain) Class pinClass;
 @property (nonatomic, copy) MRUpdatePinCoordinateWithPoint updatePinMethod;

@@ -9,9 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "MRBuiltinPinProvider.h"
-#import "MRPin.h"
 #import "MRMapTypes.h"
-#import "MRPinProvider.h"
+#import "MRMapView.h"
 
 @implementation MRBuiltinPin
 
@@ -171,6 +170,80 @@
 
     [_pinStore removeObjectForKey:identifier];
     [_coordStore removeObjectForKey:identifier];
+}
+
+-(void)updateArtifactsInMapView:(MRMapView *)mapView
+{
+    for(id<NSCopying> identifier in [self allPinIdentifiers])
+    {
+        UIView<MRPin> *pin = [self pinForIdentifier:identifier];
+        MRMapCoordinate coord = [self coordinateForIdentifier:identifier];
+
+        pin.center = [mapView scaledPointForCoordinate:coord];
+    }
+}
+
+-(void)registerGesturesInMapView:(MRMapView *)mapView
+{
+    addPinGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addPin:)];
+    [mapView addGestureRecognizer:addPinGestureRecognizer];
+}
+
+-(void)addArtifactsToMapView:(MRMapView *)mapView
+{
+    for(id<NSCopying> identifier in [self allPinIdentifiers])
+    {
+        UIView<MRPin> *pin = [self pinForIdentifier:identifier];
+        [mapView addSubview:pin];
+    }
+}
+
+-(void)unregisterGesturesInMapView:(MRMapView *)mapView
+{
+    [mapView removeGestureRecognizer:addPinGestureRecognizer];
+    _addPin_newIdentifier = nil; // If unregistered while dragging, this will cause problems if not reset.
+}
+
+-(void)removeArtifactsFromMapView:(MRMapView *)mapView
+{
+    for(id<NSCopying> identifier in [self allPinIdentifiers])
+    {
+        UIView<MRPin> *pin = [self pinForIdentifier:identifier];
+        [pin removeFromSuperview];
+    }
+}
+
+-(void)addPin:(UILongPressGestureRecognizer *)recognizer {
+    if(recognizer != addPinGestureRecognizer)
+    {
+        NSLog(@"MRBuiltinPinProvider: Kind of strange, addPin: was called with a different gesture recognizer than expected.");
+    }
+
+    MRMapView *mapView = (MRMapView *)[recognizer view];
+    CGPoint dragOffset = [[self pinClass] dragOffset];
+
+    CGPoint location = [recognizer locationInView:mapView];
+    location.x -= dragOffset.x;
+    location.y -= dragOffset.y;
+
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        NSAssert(_addPin_newIdentifier == nil, @"MRMapView: _addPin_newIdentifier != nil, addPin already in progress?");
+
+        _addPin_newIdentifier = [NSDate date];
+        UIView<MRPin> *pin = [self newPinForIdentifier:_addPin_newIdentifier];
+        pin.center = location;
+        [mapView addSubview:pin];
+    }
+    else if (recognizer.state == UIGestureRecognizerStateChanged) {
+        UIView<MRPin> *pin = [self pinForIdentifier:_addPin_newIdentifier];
+        pin.center = location;
+    }
+    else if (recognizer.state == UIGestureRecognizerStateEnded) {
+        UIView<MRPin> *pin = [self pinForIdentifier:_addPin_newIdentifier];
+        MRMapCoordinate coord = [mapView coordinateForPoint:pin.center];
+        [self updatePin:_addPin_newIdentifier withCoordinates:coord];
+        _addPin_newIdentifier = nil;
+    }
 }
 
 @end

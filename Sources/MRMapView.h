@@ -8,7 +8,7 @@
 #import "MRMapTypes.h"
 
 @class MRMapBaseView;
-@protocol MRTileProvider, MRProjection, MRPinProvider;
+@protocol MRTileProvider, MRProjection, MRPinProvider, MRArtifactController;
 
 /*
   NOTE: MRMapView sets itself as the delegate of its UIScrollView superclass
@@ -23,9 +23,8 @@
 	
 	id < MRTileProvider > _tileProvider;
 	id < MRProjection > _mapProjection;
-    id < MRPinProvider > _pinProvider;
 
-    id < NSCopying > _addPin_newIdentifier;
+    NSMutableArray *artifactControllers;
 }
 
 /*
@@ -33,11 +32,6 @@
  */
 @property (nonatomic, retain) id < MRTileProvider > tileProvider;
 @property (nonatomic, retain) id < MRProjection > mapProjection;
-
-/*
- If you want pin support, pinProvider cannot be nil.
- */
-@property (nonatomic, retain) id < MRPinProvider > pinProvider;
 
 @property (nonatomic, assign) MRMapCoordinate center; // animated
 @property (nonatomic, assign) NSUInteger zoomLevel;   // animated
@@ -52,5 +46,8 @@
 
 -(CGPoint)scaledPointForCoordinate:(MRMapCoordinate)coordinate;
 -(MRMapCoordinate)coordinateForPoint:(CGPoint)point;
+
+-(void)addArtifactController:(id<MRArtifactController>)artifactController;
+-(void)removeArtifactController:(id<MRArtifactController>)artifactController;
 
 @end
