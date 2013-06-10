@@ -47,6 +47,7 @@
     {
         MRBuiltinGPSDotProvider *gpsDotProvider = [MRBuiltinGPSDotProvider new];
         [_mapView addArtifactController:gpsDotProvider];
+        [_mapView startUpdatingLocation];
     }
 
 	[self loadState];
