@@ -12,6 +12,7 @@
 #import "MRMQOTileProvider.h"
 #import "MRMercatorProjection.h"
 #import "MRBuiltinPinProvider.h"
+#import "MRBuiltinGPSDotProvider.h"
 
 @interface SampleViewController ()
 
@@ -41,6 +42,11 @@
             MRMapCoordinate coord = [weakMapView coordinateForPoint:newPoint];
             [weakPinProvider updatePin:identifier withCoordinates:coord];
         };
+    }
+
+    {
+        MRBuiltinGPSDotProvider *gpsDotProvider = [MRBuiltinGPSDotProvider new];
+        [_mapView addArtifactController:gpsDotProvider];
     }
 
 	[self loadState];
