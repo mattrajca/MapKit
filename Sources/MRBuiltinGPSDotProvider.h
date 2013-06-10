@@ -11,5 +11,9 @@
 #import "MRArtifactController.h"
 
 @interface MRBuiltinGPSDotProvider : NSObject <MRArtifactController>
+{
+    UIView *gpsDot;
+    CLLocation *lastLocation;
+}
 
 @end
