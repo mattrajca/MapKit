@@ -43,7 +43,6 @@
 
 @synthesize tileProvider = _tileProvider;
 @synthesize mapProjection = _mapProjection;
-@synthesize pinProvider = _pinProvider;
 @dynamic center, zoomLevel;
 
 - (id)initWithFrame:(CGRect)frame {
@@ -95,9 +94,6 @@
     UITapGestureRecognizer *zoomOutGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomOut:)];
     zoomOutGestureRecognizer.numberOfTouchesRequired = 2;
     [self addGestureRecognizer:zoomOutGestureRecognizer];
-
-    UILongPressGestureRecognizer *addPinGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addPin:)];
-    [self addGestureRecognizer:addPinGestureRecognizer];
 
     artifactControllers = [[NSMutableArray alloc] init];
 }
@@ -239,10 +235,12 @@
 -(void)addArtifactController:(id<MRArtifactController>)artifactController
 {
     [artifactControllers addObject:artifactController];
+    [artifactController registerGesturesInMapView:self];
 }
 
 -(void)removeArtifactController:(id<MRArtifactController>)artifactController
 {
+    [artifactController unregisterGesturesInMapView:self];
     [artifactControllers removeObject:artifactController];
 }
 
@@ -270,33 +268,6 @@
         MRMapCoordinate coord = [self coordinateForPoint:location];
         self.zoomLevel = --zoom;
         [self setCenter:coord animated:NO];
-    }
-}
-
--(void)addPin:(UILongPressGestureRecognizer *)recognizer {
-    CGPoint dragOffset = [[_pinProvider pinClass] dragOffset];
-
-    CGPoint location = [recognizer locationInView:self];
-    location.x -= dragOffset.x;
-    location.y -= dragOffset.y;
-
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        NSAssert(_addPin_newIdentifier == nil, @"MRMapView: _addPin_newIdentifier != nil, addPin already in progress?");
-
-        _addPin_newIdentifier = [NSDate date];
-        UIView<MRPin> *pin = [_pinProvider newPinForIdentifier:_addPin_newIdentifier];
-        pin.center = location;
-        [self addSubview:pin];
-    }
-    else if (recognizer.state == UIGestureRecognizerStateChanged) {
-        UIView<MRPin> *pin = [_pinProvider pinForIdentifier:_addPin_newIdentifier];
-        pin.center = location;
-    }
-    else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        UIView<MRPin> *pin = [_pinProvider pinForIdentifier:_addPin_newIdentifier];
-        MRMapCoordinate coord = [self coordinateForPoint:pin.center];
-        [_pinProvider updatePin:_addPin_newIdentifier withCoordinates:coord];
-        _addPin_newIdentifier = nil;
     }
 }
 

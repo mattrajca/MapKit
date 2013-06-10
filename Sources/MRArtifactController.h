@@ -13,5 +13,6 @@
 @protocol MRArtifactController <NSObject>
 
 -(void)updateArtifactsInMapView:(MRMapView *)mapView;
-
+-(void)registerGesturesInMapView:(MRMapView *)mapView;
+-(void)unregisterGesturesInMapView:(MRMapView *)mapView;
 @end

@@ -32,6 +32,9 @@
 {
     NSMutableDictionary *_pinStore;
     NSMutableDictionary *_coordStore;
+    @private
+    id < NSCopying > _addPin_newIdentifier;
+    UILongPressGestureRecognizer *addPinGestureRecognizer;
 }
 
 @end
