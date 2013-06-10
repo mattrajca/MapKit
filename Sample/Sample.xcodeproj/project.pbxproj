@@ -16,6 +16,7 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* SampleViewController.m */; };
 		5825BD7C1765CF4B0007528C /* MRBuiltinGPSDotProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825BD7B1765CF4B0007528C /* MRBuiltinGPSDotProvider.m */; };
+		5825BD7E1765D4180007528C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5825BD7D1765D4180007528C /* CoreLocation.framework */; };
 		584DAB7D1760CD1A000AA1CD /* CurrentLocationPin.png in Resources */ = {isa = PBXBuildFile; fileRef = 584DAB7C1760CD1A000AA1CD /* CurrentLocationPin.png */; };
 		58F8CF081760809400F81960 /* MRBuiltinPinProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8CF071760809400F81960 /* MRBuiltinPinProvider.m */; };
 		83FFBEB515CE046C009A64FA /* MRMQOTileProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */; };
@@ -43,6 +44,7 @@
 		5825BD761765B9680007528C /* MRArtifactController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRArtifactController.h; sourceTree = "<group>"; };
 		5825BD7A1765CF4B0007528C /* MRBuiltinGPSDotProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBuiltinGPSDotProvider.h; sourceTree = "<group>"; };
 		5825BD7B1765CF4B0007528C /* MRBuiltinGPSDotProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBuiltinGPSDotProvider.m; sourceTree = "<group>"; };
+		5825BD7D1765D4180007528C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		584DAB7C1760CD1A000AA1CD /* CurrentLocationPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CurrentLocationPin.png; sourceTree = "<group>"; };
 		58F8CF0517607CC500F81960 /* MRPinProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRPinProvider.h; sourceTree = "<group>"; };
 		58F8CF061760809400F81960 /* MRBuiltinPinProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBuiltinPinProvider.h; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5825BD7E1765D4180007528C /* CoreLocation.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -137,6 +140,7 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				C997167B1220C4AD00022812 /* QuartzCore.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				5825BD7D1765D4180007528C /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
