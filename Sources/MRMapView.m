@@ -236,12 +236,18 @@
 {
     [artifactControllers addObject:artifactController];
     [artifactController addArtifactsToMapView:self];
-    [artifactController registerGesturesInMapView:self];
+    if([artifactController respondsToSelector:@selector(registerGesturesInMapView:)])
+    {
+        [artifactController registerGesturesInMapView:self];
+    }
 }
 
 -(void)removeArtifactController:(id<MRArtifactController>)artifactController
 {
-    [artifactController unregisterGesturesInMapView:self];
+    if([artifactController respondsToSelector:@selector(unregisterGesturesInMapView:)])
+    {
+        [artifactController unregisterGesturesInMapView:self];
+    }
     [artifactController removeArtifactsFromMapView:self];
     [artifactControllers removeObject:artifactController];
 }
