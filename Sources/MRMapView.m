@@ -45,6 +45,16 @@
 @synthesize mapProjection = _mapProjection;
 @dynamic center, zoomLevel;
 
++(void)mapsShouldStartTracking
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:MRMapViewStartTrackingLocation object:nil];
+}
+
++(void)mapsShouldStopTracking
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:MRMapViewStopTrackingLocation object:nil];
+}
+
 - (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
@@ -99,6 +109,9 @@
 
     _locationManager = [CLLocationManager new];
     _locationManager.delegate = self;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startUpdatingLocation) name:MRMapViewStartTrackingLocation object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopUpdatingLocation) name:MRMapViewStopTrackingLocation object:nil];
 }
 
 - (void)configureScrollView {
@@ -255,14 +268,57 @@
     [artifactControllers removeObject:artifactController];
 }
 
--(void)startUpdatingLocation
+-(void)_startUpdatingLocation
 {
     [_locationManager startUpdatingLocation];
 }
 
--(void)stopUpdatingLocation
+-(void)_stopUpdatingLocation
 {
     [_locationManager stopUpdatingLocation];
+}
+
+-(void)startUpdatingLocation
+{
+    if(!_state.isSuspended)
+    {
+        [self _startUpdatingLocation];
+        _state.isTracking = YES;
+    }
+}
+
+-(void)stopUpdatingLocation
+{
+    if(!_state.isSuspended)
+    {
+        _state.isTracking = NO;
+        [self _stopUpdatingLocation];
+    }
+}
+
+-(void)suspendLocationUpdates
+{
+    if(_state.isTracking)
+    {
+        [self _stopUpdatingLocation];
+    }
+    _state.isSuspended = YES;
+}
+
+-(void)resumeLocationUpdates
+{
+    if(_state.isSuspended && _state.isTracking)
+    {
+        [self _startUpdatingLocation];
+    }
+
+    _state.isSuspended = NO;
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MRMapViewStartTrackingLocation object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MRMapViewStopTrackingLocation object:nil];
 }
 
 @end

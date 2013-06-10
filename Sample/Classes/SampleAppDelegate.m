@@ -9,6 +9,8 @@
 
 #import "SampleViewController.h"
 
+#import "MRMapView.h"
+
 @implementation SampleAppDelegate
 
 @synthesize window, viewController;
@@ -21,12 +23,12 @@
 
 -(void)applicationWillResignActive:(UIApplication *)application
 {
-    [viewController applicationWillResignActive];
+    [MRMapView mapsShouldStopTracking];
 }
 
 -(void)applicationDidBecomeActive:(UIApplication *)application
 {
-    [viewController applicationDidBecomeActive];
+    [MRMapView mapsShouldStartTracking];
 }
 
 @end
