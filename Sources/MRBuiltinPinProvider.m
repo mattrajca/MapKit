@@ -17,13 +17,39 @@
 
 @synthesize provider=_provider;
 
++(CGPoint)dragOffset
+{
+    return CGPointMake(0, 25 * [UIScreen mainScreen].scale);
+}
+
+-(void)initializeVariables
+{
+    backgroundImage = [UIImage imageNamed:@"CurrentLocationPin"];
+    pinSize = CGSizeMake(64, 104);
+    pinAnchorPoint = CGPointMake(7, 45);
+    pinHandle = CGRectMake(6, 0, 48, 47);
+}
+
+-(void)commonInit
+{
+    dragOffset = [[self class] dragOffset];
+
+    [self initializeVariables];
+
+    self.frame = CGRectMake(0, 0, pinSize.width, pinSize.height);
+    self.layer.anchorPoint = CGPointMake(pinAnchorPoint.x / pinSize.width, pinAnchorPoint.y / pinSize.height);
+    self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+
+    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(drag:)];
+    longPressGesture.delegate = self;
+    [self addGestureRecognizer:longPressGesture];
+}
+
 -(id)init
 {
     if((self = [super init]))
     {
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(drag:)];
-        longPressGesture.delegate = self;
-        [self addGestureRecognizer:longPressGesture];
+        [self commonInit];
     }
     return self;
 }
@@ -32,7 +58,7 @@
 {
     if(recognizer.state == UIGestureRecognizerStateBegan) {
         CGPoint location = [recognizer locationInView:[self superview]];
-        touchOffsetFromCenter = CGPointMake(self.center.x - location.x, self.center.y - location.y - (25 * [UIScreen mainScreen].scale) );
+        touchOffsetFromCenter = CGPointMake(self.center.x - location.x - dragOffset.x, self.center.y - location.y - dragOffset.y);
 
         location.x += touchOffsetFromCenter.x;
         location.y += touchOffsetFromCenter.y;
@@ -54,6 +80,12 @@
         [self.provider updatePinMethod](identifier, self.center);
     }
 
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    CGPoint location = [touch locationInView:self];
+    return CGRectContainsPoint(pinHandle, location);
 }
 
 @end
@@ -85,9 +117,6 @@
     UIView<MRPin> *newPin = [_pinClass new];
 
     newPin.provider = self;
-    newPin.frame = CGRectMake(0, 0, 64, 104);
-    newPin.layer.anchorPoint = CGPointMake(7.0 / 64.0, 45.0 / 104.0);
-    newPin.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"CurrentLocationPin"]];
 
     [_pinStore setObject:newPin forKey:identifier];
 

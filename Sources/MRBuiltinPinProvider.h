@@ -13,9 +13,17 @@
 
 @interface MRBuiltinPin : UIView <MRPin, UIGestureRecognizerDelegate>
 {
+    UIImage *backgroundImage;
+    CGSize pinSize;
+    CGPoint pinAnchorPoint;
+    CGRect pinHandle;
     @private
     CGPoint touchOffsetFromCenter;
+    CGPoint dragOffset; // Convenience ivar. Override +dragOffset instead of changing this directly.
 }
+
+// Subclasses should override the following methods
+-(void)initializeVariables;
 
 @end
 
@@ -24,7 +32,5 @@
     NSMutableDictionary *_pinStore;
     NSMutableDictionary *_coordStore;
 }
-
-@property (nonatomic, retain) Class pinClass;
 
 @end

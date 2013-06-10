@@ -264,9 +264,11 @@
 }
 
 -(void)addPin:(UILongPressGestureRecognizer *)recognizer {
+    CGPoint dragOffset = [[_pinProvider pinClass] dragOffset];
 
     CGPoint location = [recognizer locationInView:self];
-    location.y -= 25 * [UIScreen mainScreen].scale;
+    location.x -= dragOffset.x;
+    location.y -= dragOffset.y;
 
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         NSAssert(_addPin_newIdentifier == nil, @"MRMapView: _addPin_newIdentifier != nil, addPin already in progress?");

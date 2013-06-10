@@ -15,4 +15,6 @@
 
 @property (nonatomic, assign) id<MRPinProvider> provider;
 
++(CGPoint)dragOffset;
+
 @end
