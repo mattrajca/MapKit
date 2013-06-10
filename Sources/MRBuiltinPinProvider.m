@@ -189,9 +189,28 @@
     [mapView addGestureRecognizer:addPinGestureRecognizer];
 }
 
+-(void)addArtifactsToMapView:(MRMapView *)mapView
+{
+    for(id<NSCopying> identifier in [self allPinIdentifiers])
+    {
+        UIView<MRPin> *pin = [self pinForIdentifier:identifier];
+        [mapView addSubview:pin];
+    }
+}
+
 -(void)unregisterGesturesInMapView:(MRMapView *)mapView
 {
     [mapView removeGestureRecognizer:addPinGestureRecognizer];
+    _addPin_newIdentifier = nil; // If unregistered while dragging, this will cause problems if not reset.
+}
+
+-(void)removeArtifactsFromMapView:(MRMapView *)mapView
+{
+    for(id<NSCopying> identifier in [self allPinIdentifiers])
+    {
+        UIView<MRPin> *pin = [self pinForIdentifier:identifier];
+        [pin removeFromSuperview];
+    }
 }
 
 -(void)addPin:(UILongPressGestureRecognizer *)recognizer {

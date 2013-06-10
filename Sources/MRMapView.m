@@ -235,12 +235,14 @@
 -(void)addArtifactController:(id<MRArtifactController>)artifactController
 {
     [artifactControllers addObject:artifactController];
+    [artifactController addArtifactsToMapView:self];
     [artifactController registerGesturesInMapView:self];
 }
 
 -(void)removeArtifactController:(id<MRArtifactController>)artifactController
 {
     [artifactController unregisterGesturesInMapView:self];
+    [artifactController removeArtifactsFromMapView:self];
     [artifactControllers removeObject:artifactController];
 }
 
