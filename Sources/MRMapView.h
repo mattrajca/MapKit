@@ -50,6 +50,8 @@ typedef struct {
 @property (nonatomic, retain) id < MRTileProvider > tileProvider;
 @property (nonatomic, retain) id < MRProjection > mapProjection;
 
+@property (nonatomic, retain) NSString *cacheDirectorySuffix; // OK if null
+
 @property (nonatomic, assign) MRMapCoordinate center; // animated
 @property (nonatomic, assign) NSUInteger zoomLevel;   // animated
 

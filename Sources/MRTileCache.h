@@ -13,7 +13,7 @@
 }
 
 @property (assign) NSUInteger maxCacheSize; /* in tiles, default=1,000 */
-@property (readonly) NSString *cacheDirectory;
+@property (nonatomic, retain) NSString *cacheDirectory;
 
 - (id)initWithCacheDirectory:(NSString *)aPath;
 
