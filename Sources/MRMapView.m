@@ -357,7 +357,6 @@
     CGPoint location = [recognizer locationInView:self];
 	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
 
-    // zoom out
     if (zoom > [_tileProvider minZoomLevel]) {
         MRMapCoordinate coord = [self coordinateForPoint:location];
         self.zoomLevel = --zoom;
