@@ -22,6 +22,7 @@
 	id < MRTileProvider > _tileProvider;
 }
 
+@property (nonatomic, retain) NSString *cacheDirectorySuffix;
 @property (nonatomic, assign) id < MRTileProvider > tileProvider;
 
 - (void)configureLayer;
@@ -315,6 +316,18 @@
     _state.isSuspended = NO;
 }
 
+-(void)setCacheDirectorySuffix:(NSString *)cacheDirectorySuffix
+{
+    _baseView.cacheDirectorySuffix = cacheDirectorySuffix;
+
+    [_baseView setNeedsDisplay];
+}
+
+-(NSString *)cacheDirectorySuffix
+{
+    return _baseView.cacheDirectorySuffix;
+}
+
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MRMapViewStartTrackingLocation object:nil];
@@ -369,6 +382,7 @@
 @implementation MRMapBaseView
 
 @synthesize tileProvider;
+@synthesize cacheDirectorySuffix=_cacheDirectorySuffix;
 
 static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 
@@ -392,14 +406,25 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	return self;
 }
 
+-(void)setCacheDirectorySuffix:(NSString *)cacheDirectorySuffix
+{
+    _cacheDirectorySuffix = cacheDirectorySuffix;
+
+    _cache.cacheDirectory = [self cacheDirectory];
+}
+
 - (NSString *)cacheDirectory {
 	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-	
+
 	if (![dirs count])
 		return nil;
 	
 	NSString *path = [[dirs objectAtIndex:0] stringByAppendingPathComponent:@"Tiles"];
-	
+    if(_cacheDirectorySuffix)
+    {
+        path = [path stringByAppendingString:_cacheDirectorySuffix];
+    }
+
 	NSFileManager *fm = [[NSFileManager alloc] init];
 	
 	if (![fm fileExistsAtPath:path isDirectory:NULL]) {
