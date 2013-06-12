@@ -55,6 +55,16 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 	return [self.cacheDirectory stringByAppendingPathComponent:tileKey];
 }
 
+- (BOOL)tileExistsAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
+	if (self.flushing)
+		return FALSE;
+
+	NSFileManager *fm = [[NSFileManager alloc] init];
+
+	NSString *path = [self pathForTileAtX:x y:y zoomLevel:zoom];
+	return [fm fileExistsAtPath:path];
+}
+
 - (NSData *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
 	if (self.flushing)
 		return nil;

@@ -18,6 +18,7 @@
 - (id)initWithCacheDirectory:(NSString *)aPath;
 
 // thread safe...
+- (BOOL)tileExistsAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
 - (NSData *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
 - (void)setTile:(NSData	*)data x:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
 
