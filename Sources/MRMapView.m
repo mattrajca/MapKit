@@ -120,6 +120,8 @@
 	self.minimumZoomScale = 1.0f;
 	self.maximumZoomScale = MRMapScaleFromZoomLevel([_tileProvider maxZoomLevel]);
 	self.delegate = _tileProvider ? self : nil;
+
+    [self setNeedsLayout];
 }
 
 - (void)configureLayers {
