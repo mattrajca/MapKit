@@ -7,8 +7,6 @@
 
 #import "MROSMTileProvider.h"
 
-#import "MRMapTypes.h"
-
 @implementation MROSMTileProvider
 
 - (NSURL *)tileURLForTile:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
