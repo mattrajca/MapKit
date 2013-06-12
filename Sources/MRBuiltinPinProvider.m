@@ -23,10 +23,19 @@
 
 -(void)initializeVariables
 {
-    backgroundImage = [UIImage imageNamed:@"CurrentLocationPin"];
-    pinSize = CGSizeMake(64, 104);
-    pinAnchorPoint = CGPointMake(7, 45);
-    pinHandle = CGRectMake(6, 0, 48, 47);
+    UIImage *backgroundImage = [UIImage imageNamed:@"CurrentLocationPin"];
+    if(backgroundImage)
+    {
+        backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+        pinSize = CGSizeMake(64, 104);
+        pinAnchorPoint = CGPointMake(7, 45);
+        pinHandle = CGRectMake(6, 0, 48, 47);
+    }
+    else
+    {
+        backgroundColor = [UIColor redColor];
+        pinSize = CGSizeMake(10, 10);
+    }
 }
 
 -(void)commonInit
@@ -35,9 +44,19 @@
 
     [self initializeVariables];
 
+    if(CGPointEqualToPoint(pinAnchorPoint, CGPointZero))
+    {
+        pinAnchorPoint = CGPointMake(pinSize.width / 2, pinSize.height / 2);
+    }
+
+    if(CGRectEqualToRect(pinHandle, CGRectZero))
+    {
+        pinHandle = CGRectMake(0, 0, pinSize.width, pinSize.height);
+    }
+
     self.frame = CGRectMake(0, 0, pinSize.width, pinSize.height);
     self.layer.anchorPoint = CGPointMake(pinAnchorPoint.x / pinSize.width, pinAnchorPoint.y / pinSize.height);
-    self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+    self.backgroundColor = backgroundColor;
 
     UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(drag:)];
     longPressGesture.delegate = self;
