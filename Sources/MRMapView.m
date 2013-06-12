@@ -180,12 +180,14 @@
 - (void)setTileProvider:(id < MRTileProvider > )prov {
 	if (_tileProvider != prov) {
 		_tileProvider = prov;
-		
+
+        self.zoomLevel = [prov minZoomLevel];
+
 		[self configureScrollView];
 		[self configureLayers];
-		
+
 		_baseView.tileProvider = _tileProvider;
-		
+
 		[self setCenter:MRMapCoordinateMake(0, 0) animated:NO];
 	}
 }
