@@ -23,7 +23,8 @@
 
 -(void)initializeVariables
 {
-    UIImage *backgroundImage = [UIImage imageNamed:@"CurrentLocationPin"];
+    imageName = @"CurrentLocationPin";
+    UIImage *backgroundImage = [UIImage imageNamed:imageName];
     if(backgroundImage)
     {
         backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
@@ -33,8 +34,9 @@
     }
     else
     {
-        backgroundColor = [UIColor redColor];
+        self.backgroundColor = [UIColor redColor];
         pinSize = CGSizeMake(10, 10);
+        imageName = nil;
     }
 }
 
@@ -56,7 +58,6 @@
 
     self.frame = CGRectMake(0, 0, pinSize.width, pinSize.height);
     self.layer.anchorPoint = CGPointMake(pinAnchorPoint.x / pinSize.width, pinAnchorPoint.y / pinSize.height);
-    self.backgroundColor = backgroundColor;
 
     UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(drag:)];
     longPressGesture.delegate = self;

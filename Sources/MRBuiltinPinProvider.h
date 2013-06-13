@@ -14,7 +14,7 @@
 
 @interface MRBuiltinPin : UIView <MRPin, UIGestureRecognizerDelegate>
 {
-    UIColor *backgroundColor;
+    NSString *imageName;
     CGSize pinSize;
     CGPoint pinAnchorPoint;
     CGRect pinHandle;
