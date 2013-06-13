@@ -90,8 +90,6 @@
     CALayer *layer = [CALayer layer];
     layer.masksToBounds = YES;
     layer.backgroundColor = [[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.4] CGColor];
-    layer.cornerRadius = _accuracyRadius;
-    layer.frame = CGRectMake(pinAnchorPoint.x - _accuracyRadius, pinAnchorPoint.y - _accuracyRadius, _accuracyRadius * 2, _accuracyRadius * 2);
     layer.borderColor = [[UIColor redColor] CGColor];
     layer.borderWidth = 1.0f;
 
@@ -139,6 +137,13 @@
 {
     CGPoint location = [touch locationInView:self];
     return CGRectContainsPoint(pinHandle, location);
+}
+
+-(void)setAccuracyRadius:(CGFloat)accuracyRadius
+{
+    _accuracyRadius = accuracyRadius;
+    accuracyCircleLayer.cornerRadius = _accuracyRadius;
+    accuracyCircleLayer.frame = CGRectMake(pinAnchorPoint.x - _accuracyRadius, pinAnchorPoint.y - _accuracyRadius, _accuracyRadius * 2, _accuracyRadius * 2);
 }
 
 @end
