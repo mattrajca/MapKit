@@ -15,6 +15,7 @@
 @implementation MRBuiltinPin
 
 @synthesize provider=_provider;
+@synthesize accuracyRadius=_accuracyRadius;
 
 +(CGPoint)dragOffset
 {
@@ -27,7 +28,6 @@
     UIImage *backgroundImage = [UIImage imageNamed:imageName];
     if(backgroundImage)
     {
-        backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
         pinSize = CGSizeMake(64, 104);
         pinAnchorPoint = CGPointMake(7, 45);
         pinHandle = CGRectMake(6, 0, 48, 47);
@@ -59,9 +59,21 @@
     self.frame = CGRectMake(0, 0, pinSize.width, pinSize.height);
     self.layer.anchorPoint = CGPointMake(pinAnchorPoint.x / pinSize.width, pinAnchorPoint.y / pinSize.height);
 
-    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(drag:)];
+    [self removeGestureRecognizer:longPressGesture];
+    longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(drag:)];
     longPressGesture.delegate = self;
     [self addGestureRecognizer:longPressGesture];
+
+    [accuracyCircleLayer removeFromSuperlayer];
+    accuracyCircleLayer = [self makeAccuracyCircleLayer];
+    [self.layer addSublayer:accuracyCircleLayer];
+
+    if(imageName)
+    {
+        [pinLayer removeFromSuperlayer];
+        pinLayer = [self makePinLayer];
+        [self.layer addSublayer:pinLayer];
+    }
 }
 
 -(id)init
@@ -71,6 +83,28 @@
         [self commonInit];
     }
     return self;
+}
+
+-(CALayer *)makeAccuracyCircleLayer
+{
+    CALayer *layer = [CALayer layer];
+    layer.masksToBounds = YES;
+    layer.backgroundColor = [[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.4] CGColor];
+    layer.cornerRadius = _accuracyRadius;
+    layer.frame = CGRectMake(pinAnchorPoint.x - _accuracyRadius, pinAnchorPoint.y - _accuracyRadius, _accuracyRadius * 2, _accuracyRadius * 2);
+    layer.borderColor = [[UIColor redColor] CGColor];
+    layer.borderWidth = 1.0f;
+
+    return layer;
+}
+
+-(CALayer *)makePinLayer
+{
+    CALayer *layer = [CALayer layer];
+    layer.frame = self.bounds;
+    layer.contents = (id)[[UIImage imageNamed:imageName] CGImage];
+
+    return layer;
 }
 
 -(void)drag:(UILongPressGestureRecognizer *)recognizer

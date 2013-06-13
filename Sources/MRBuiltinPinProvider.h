@@ -21,10 +21,18 @@
     @private
     CGPoint touchOffsetFromCenter;
     CGPoint dragOffset; // Convenience ivar. Override +dragOffset instead of changing this directly.
+
+    CALayer *accuracyCircleLayer;
+    CALayer *pinLayer;
+
+    UILongPressGestureRecognizer *longPressGesture;
 }
 
 // Subclasses should override the following methods
 -(void)initializeVariables;
+
+-(CALayer *)makeAccuracyCircleLayer;
+-(CALayer *)makePinLayer;
 
 @end
 

@@ -14,6 +14,7 @@
 @protocol MRPin <NSObject>
 
 @property (nonatomic, assign) id<MRPinProvider> provider;
+@property (nonatomic, assign) CGFloat accuracyRadius;
 
 +(CGPoint)dragOffset;
 
