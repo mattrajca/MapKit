@@ -8,7 +8,11 @@
 #import "SampleViewController.h"
 
 #import "MRMapView.h"
-#import "MROSMTileProvider.h"
+
+#import "MRMQOTileProvider.h"
+#import "MRMercatorProjection.h"
+#import "MRBuiltinPinProvider.h"
+#import "MRBuiltinGPSDotProvider.h"
 
 @interface SampleViewController ()
 
@@ -25,10 +29,30 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	_mapView.tileProvider = [[MROSMTileProvider new] autorelease];
-	
+	_mapView.tileProvider = [MRMQOTileProvider new];
+	_mapView.mapProjection = [MRMercatorProjection new];
+
+    { // Set up Pin provider
+        MRBuiltinPinProvider *pinProvider = [MRBuiltinPinProvider new];
+        [_mapView addArtifactController:pinProvider];
+
+        __weak MRMapView *weakMapView = _mapView;
+        __weak MRBuiltinPinProvider *weakPinProvider = pinProvider;
+        pinProvider.updatePinMethod = ^(id<NSCopying> identifier, CGPoint newPoint) {
+            MRMapCoordinate coord = [weakMapView coordinateForPoint:newPoint];
+            [weakPinProvider updatePin:identifier withCoordinates:coord];
+        };
+    }
+
+    {
+        MRBuiltinGPSDotProvider *gpsDotProvider = [MRBuiltinGPSDotProvider new];
+        [_mapView addArtifactController:gpsDotProvider];
+        [_mapView startUpdatingLocation];
+    }
+
 	[self loadState];
 }
+
 
 - (void)loadState {
 	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
@@ -73,12 +97,6 @@
 - (IBAction)locateChicago:(id)sender {
 	_mapView.zoomLevel = 10;
 	_mapView.center = MRMapCoordinateMake(41.85f, -87.65f);
-}
-
-- (void)dealloc {
-	[_mapView release];
-	
-    [super dealloc];
 }
 
 @end

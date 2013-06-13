@@ -32,7 +32,7 @@
 
 static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 
-#define kDefaultMaxCacheSize 1000
+#define kDefaultMaxCacheSize 10000
 
 - (id)initWithCacheDirectory:(NSString *)aPath {
 	NSParameterAssert (aPath != nil);
@@ -55,6 +55,16 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 	return [self.cacheDirectory stringByAppendingPathComponent:tileKey];
 }
 
+- (BOOL)tileExistsAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
+	if (self.flushing)
+		return FALSE;
+
+	NSFileManager *fm = [[NSFileManager alloc] init];
+
+	NSString *path = [self pathForTileAtX:x y:y zoomLevel:zoom];
+	return [fm fileExistsAtPath:path];
+}
+
 - (NSData *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
 	if (self.flushing)
 		return nil;
@@ -63,8 +73,6 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 	
 	NSString *path = [self pathForTileAtX:x y:y zoomLevel:zoom];
 	NSData *data = [fm contentsAtPath:path];
-	
-	[fm release];
 	
 	if (!data)
 		return nil;
@@ -103,8 +111,7 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 	NSTimeInterval tz = [[NSTimeZone systemTimeZone] secondsFromGMT];
 	
 	NSDate *modificationDate = [[cal dateFromComponents:comps] dateByAddingTimeInterval:tz];
-	[comps release];
-	
+
 	return modificationDate;
 }
 
@@ -124,8 +131,6 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 						  modificationDate, @"modificationDate", nil]];
 	}
 	
-	[fm release];
-	
 	[files sortUsingComparator:^(id path1, id path2) {
 		return [[path1 objectForKey:@"modificationDate"] compare:
 				[path2 objectForKey:@"modificationDate"]];
@@ -142,8 +147,6 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 }
 
 - (void)flushCachesThread {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	_flushing = YES;
 	
 	NSFileManager *fm = [[NSFileManager alloc] init];
@@ -159,17 +162,7 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 		}
 	}
 	
-	[fm release];
-	
 	_flushing = NO;
-	
-	[pool release];
-}
-
-- (void)dealloc {
-	[_cacheDirectory release];
-	
-	[super dealloc];
 }
 
 @end

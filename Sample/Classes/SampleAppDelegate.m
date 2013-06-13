@@ -9,22 +9,26 @@
 
 #import "SampleViewController.h"
 
+#import "MRMapView.h"
+
 @implementation SampleAppDelegate
 
 @synthesize window, viewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[window addSubview:viewController.view];
-	[window makeKeyAndVisible];
+    [window setRootViewController:viewController];
 	
 	return YES;
 }
 
-- (void)dealloc {
-	[viewController release];
-	[window release];
-	
-	[super dealloc];
+-(void)applicationWillResignActive:(UIApplication *)application
+{
+    [MRMapView mapsShouldStopTracking];
+}
+
+-(void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [MRMapView mapsShouldStartTracking];
 }
 
 @end

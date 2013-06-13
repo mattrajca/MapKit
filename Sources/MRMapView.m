@@ -9,10 +9,12 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "MRMercatorProjection.h"
+#import "MRArtifactController.h"
 #import "MRProjection.h"
 #import "MRTileCache.h"
 #import "MRTileProvider.h"
+#import "MRPinProvider.h"
+#import "MRPin.h"
 
 @interface MRMapBaseView : UIView {
   @private
@@ -20,6 +22,7 @@
 	id < MRTileProvider > _tileProvider;
 }
 
+@property (nonatomic, retain) NSString *cacheDirectorySuffix;
 @property (nonatomic, assign) id < MRTileProvider > tileProvider;
 
 - (void)configureLayer;
@@ -43,6 +46,16 @@
 @synthesize mapProjection = _mapProjection;
 @dynamic center, zoomLevel;
 
++(void)mapsShouldStartTracking
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:MRMapViewStartTrackingLocation object:nil];
+}
+
++(void)mapsShouldStopTracking
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:MRMapViewStopTrackingLocation object:nil];
+}
+
 - (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
@@ -60,11 +73,20 @@
 }
 
 - (id)initWithFrame:(CGRect)frame tileProvider:(id < MRTileProvider >)tileProvider {
+    if((self = [self initWithFrame:frame])) {
+        self.tileProvider = tileProvider;
+    }
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame tileProvider:(id < MRTileProvider >)tileProvider mapProjection:(id < MRProjection >)mapProjection {
 	NSParameterAssert (tileProvider != nil);
-	
+	NSParameterAssert (mapProjection != nil);
+
 	self = [self initWithFrame:frame];
 	if (self) {
 		self.tileProvider = tileProvider;
+        self.mapProjection = mapProjection;
 	}
 	return self;
 }
@@ -75,8 +97,22 @@
 	self.showsVerticalScrollIndicator = NO;
 	self.scrollsToTop = NO;
 	self.bounces = NO;
-	
-	self.mapProjection = [[MRMercatorProjection new] autorelease];
+
+    UITapGestureRecognizer *zoomInGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomIn:)];
+    zoomInGestureRecognizer.numberOfTapsRequired = 2;
+    [self addGestureRecognizer:zoomInGestureRecognizer];
+
+    UITapGestureRecognizer *zoomOutGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomOut:)];
+    zoomOutGestureRecognizer.numberOfTouchesRequired = 2;
+    [self addGestureRecognizer:zoomOutGestureRecognizer];
+
+    artifactControllers = [[NSMutableArray alloc] init];
+
+    _locationManager = [CLLocationManager new];
+    _locationManager.delegate = self;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startUpdatingLocation) name:MRMapViewStartTrackingLocation object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopUpdatingLocation) name:MRMapViewStopTrackingLocation object:nil];
 }
 
 - (void)configureScrollView {
@@ -84,6 +120,8 @@
 	self.minimumZoomScale = 1.0f;
 	self.maximumZoomScale = MRMapScaleFromZoomLevel([_tileProvider maxZoomLevel]);
 	self.delegate = _tileProvider ? self : nil;
+
+    [self setNeedsLayout];
 }
 
 - (void)configureLayers {
@@ -118,48 +156,40 @@
 	_baseView.contentScaleFactor = 1.0f / [UIScreen mainScreen].scale;
 }
 
+-(CGPoint)getOffset
+{
+    CGPoint offset = CGPointZero;
+
+    CGSize boundsSize = self.bounds.size;
+    CGRect frameToCenter = _baseView.frame;
+
+    if(frameToCenter.size.width < boundsSize.width)
+    {
+        offset.x = (boundsSize.width - frameToCenter.size.width) / 2;
+    }
+    if(frameToCenter.size.height < boundsSize.height)
+    {
+        offset.y = (boundsSize.height - frameToCenter.size.height) / 2;
+    }
+
+    return offset;
+}
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
 	return _baseView;
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	[super touchesEnded:touches withEvent:event];
-	
-	UITouch *touch = [touches anyObject];
-	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
-	
-	if ([touches count] == 1 && touch.tapCount == 2) {
-		// zoom in
-		if (zoom < [_tileProvider maxZoomLevel]) {
-			CGPoint pt = [touch locationInView:self];
-			
-			MRMapCoordinate coord = [_mapProjection coordinateForPoint:pt
-															 zoomLevel:zoom
-															  tileSize:[_tileProvider tileSize]];
-			zoom++;
-			
-			[self setCenter:coord animated:NO];
-			self.zoomLevel = zoom;
-		}
-	}
-	else if ([touches count] == 2 && touch.tapCount == 1) {
-		// zoom out
-		if (zoom > [_tileProvider minZoomLevel]) {
-			self.zoomLevel = --zoom;
-		}
-	}
-}
-
 - (void)setTileProvider:(id < MRTileProvider > )prov {
 	if (_tileProvider != prov) {
-		[_tileProvider release];
-		_tileProvider = [prov retain];
-		
+		_tileProvider = prov;
+
+        self.zoomLevel = [prov minZoomLevel];
+
 		[self configureScrollView];
 		[self configureLayers];
-		
+
 		_baseView.tileProvider = _tileProvider;
-		
+
 		[self setCenter:MRMapCoordinateMake(0, 0) animated:NO];
 	}
 }
@@ -181,9 +211,7 @@
 	pt.x += self.bounds.size.width / 2;
 	pt.y += self.bounds.size.height / 2;
 	
-	return [_mapProjection coordinateForPoint:pt
-									zoomLevel:self.zoomLevel
-									 tileSize:[_tileProvider tileSize]];
+    return [self coordinateForPoint:pt];
 }
 
 - (void)setCenter:(MRMapCoordinate)coord {
@@ -191,22 +219,164 @@
 }
 
 - (void)setCenter:(MRMapCoordinate)coord animated:(BOOL)anim {
-	CGPoint pt = [_mapProjection pointForCoordinate:coord
-										  zoomLevel:self.zoomLevel
-										   tileSize:[_tileProvider tileSize]];
-	
+	CGPoint pt = [self scaledPointForCoordinate:coord];
+
 	pt.x -= self.bounds.size.width / 2;
 	pt.y -= self.bounds.size.height / 2;
 	
 	[self setContentOffset:pt animated:anim];
 }
 
-- (void)dealloc {
-	[_baseView release];
-	[_tileProvider release];
-	[_mapProjection release];
-	
-	[super dealloc];
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+    for(id<MRArtifactController> artifactController in artifactControllers)
+    {
+        [artifactController updateArtifactsInMapView:self];
+    }
+}
+
+-(CGPoint)scaledPointForCoordinate:(MRMapCoordinate)coord
+{
+    return [_mapProjection scaledPointForCoordinate:coord
+                                          zoomScale:self.zoomScale
+                                        contentSize:self.contentSize
+                                           tileSize:[_tileProvider tileSize]
+                                          andOffset:[self getOffset]];
+}
+
+-(MRMapCoordinate)coordinateForPoint:(CGPoint)point
+{
+    return [_mapProjection coordinateForPoint:point
+                             zoomScale:self.zoomScale
+                           contentSize:self.contentSize
+                              tileSize:[_tileProvider tileSize]
+                             andOffset:[self getOffset]];
+}
+
+-(void)addArtifactController:(id<MRArtifactController>)artifactController
+{
+    [artifactControllers addObject:artifactController];
+    [artifactController addArtifactsToMapView:self];
+    if([artifactController respondsToSelector:@selector(registerGesturesInMapView:)])
+    {
+        [artifactController registerGesturesInMapView:self];
+    }
+}
+
+-(void)removeArtifactController:(id<MRArtifactController>)artifactController
+{
+    if([artifactController respondsToSelector:@selector(unregisterGesturesInMapView:)])
+    {
+        [artifactController unregisterGesturesInMapView:self];
+    }
+    [artifactController removeArtifactsFromMapView:self];
+    [artifactControllers removeObject:artifactController];
+}
+
+-(void)_startUpdatingLocation
+{
+    [_locationManager startUpdatingLocation];
+}
+
+-(void)_stopUpdatingLocation
+{
+    [_locationManager stopUpdatingLocation];
+}
+
+-(void)startUpdatingLocation
+{
+    if(!_state.isSuspended)
+    {
+        [self _startUpdatingLocation];
+        _state.isTracking = YES;
+    }
+}
+
+-(void)stopUpdatingLocation
+{
+    if(!_state.isSuspended)
+    {
+        _state.isTracking = NO;
+        [self _stopUpdatingLocation];
+    }
+}
+
+-(void)suspendLocationUpdates
+{
+    if(_state.isTracking)
+    {
+        [self _stopUpdatingLocation];
+    }
+    _state.isSuspended = YES;
+}
+
+-(void)resumeLocationUpdates
+{
+    if(_state.isSuspended && _state.isTracking)
+    {
+        [self _startUpdatingLocation];
+    }
+
+    _state.isSuspended = NO;
+}
+
+-(void)setCacheDirectorySuffix:(NSString *)cacheDirectorySuffix
+{
+    _baseView.cacheDirectorySuffix = cacheDirectorySuffix;
+
+    [_baseView setNeedsDisplay];
+}
+
+-(NSString *)cacheDirectorySuffix
+{
+    return _baseView.cacheDirectorySuffix;
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MRMapViewStartTrackingLocation object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MRMapViewStopTrackingLocation object:nil];
+}
+
+@end
+
+@implementation MRMapView (gestures)
+
+-(void)zoomIn:(UITapGestureRecognizer *)recognizer {
+    CGPoint location = [recognizer locationInView:self];
+	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
+
+    if (zoom < [_tileProvider maxZoomLevel]) {
+        MRMapCoordinate coord = [self coordinateForPoint:location];
+        self.zoomLevel = ++zoom;
+        [self setCenter:coord animated:NO];
+    }
+}
+
+-(void)zoomOut:(UITapGestureRecognizer *)recognizer {
+    CGPoint location = [recognizer locationInView:self];
+	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
+
+    if (zoom > [_tileProvider minZoomLevel]) {
+        MRMapCoordinate coord = [self coordinateForPoint:location];
+        self.zoomLevel = --zoom;
+        [self setCenter:coord animated:NO];
+    }
+}
+
+@end
+
+@implementation MRMapView (locationManagerCallbacks)
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    for(id<MRArtifactController> artifactController in artifactControllers)
+    {
+        if([artifactController respondsToSelector:@selector(mapView:didUpdateToLocation:fromLocation:)])
+        {
+            [artifactController mapView:self didUpdateToLocation:newLocation fromLocation:oldLocation];
+        }
+    }
 }
 
 @end
@@ -215,6 +385,7 @@
 @implementation MRMapBaseView
 
 @synthesize tileProvider;
+@synthesize cacheDirectorySuffix=_cacheDirectorySuffix;
 
 static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 
@@ -238,23 +409,32 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	return self;
 }
 
+-(void)setCacheDirectorySuffix:(NSString *)cacheDirectorySuffix
+{
+    _cacheDirectorySuffix = cacheDirectorySuffix;
+
+    _cache.cacheDirectory = [self cacheDirectory];
+}
+
 - (NSString *)cacheDirectory {
 	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-	
+
 	if (![dirs count])
 		return nil;
 	
 	NSString *path = [[dirs objectAtIndex:0] stringByAppendingPathComponent:@"Tiles"];
-	
+    if(_cacheDirectorySuffix)
+    {
+        path = [path stringByAppendingString:_cacheDirectorySuffix];
+    }
+
 	NSFileManager *fm = [[NSFileManager alloc] init];
 	
 	if (![fm fileExistsAtPath:path isDirectory:NULL]) {
 		[fm createDirectoryAtPath:path withIntermediateDirectories:YES
 					   attributes:nil error:nil];
 	}
-	
-	[fm release];
-	
+
 	return path;
 }
 
@@ -296,7 +476,7 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	NSUInteger x = floor(crect.origin.x / crect.size.width);
 	NSUInteger y = floor(crect.origin.y / crect.size.width);
 	
-	NSData *tileData = [[_cache tileAtX:x y:y zoomLevel:zoomLevel] retain];
+	NSData *tileData = [_cache tileAtX:x y:y zoomLevel:zoomLevel];
 	
 	if (!tileData) {
 		NSURL *tileURL = [_tileProvider tileURLForTile:x y:y zoomLevel:zoomLevel];
@@ -309,16 +489,8 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	}
 	
 	UIImage *tileImage = [[UIImage alloc] initWithData:tileData];
-	[tileData release];
-	
-	[tileImage drawInRect:crect];
-	[tileImage release];
-}
 
-- (void)dealloc {
-	[_cache release];
-	
-	[super dealloc];
+	[tileImage drawInRect:crect];
 }
 
 @end

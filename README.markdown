@@ -1,14 +1,19 @@
 MapKit
 ======
 
-MapKit is an iOS 'library' for displaying tiled maps. While `MKMapView` was introduced in iOS 3.0, it lacks support for tile providers other than Google Maps. While this is not a big issue for most, it prevents developers from building applications that utilize data from atypical sources such as Google Mars or Google Sky. Please be aware of licensing issues when building custom tile providers. The only built-in tile provider is OpenStreetMap ([licensing information](http://wiki.openstreetmap.org/wiki/OpenStreetMap_License)).
+MapKit is an iOS 'library' for displaying tiled maps. While `MKMapView` was introduced in iOS 3.0, it lacks support for tile providers other than Google Maps. While this is not a big issue for most, it prevents developers from building applications that utilize data from atypical sources such as Google Mars or Google Sky. Please be aware of licensing issues when building custom tile providers. There are a few tile providers, OpenStreetMap ([licensing information](http://wiki.openstreetmap.org/wiki/OpenStreetMap_License)) and MapQuest ([terms of use](http://developer.mapquest.com/web/info/terms-of-use)).
 
-NOTE: MapKit was only tested on iOS 4.0. Due to changes in thread-safety of UIKit, it may not function properly on earlier versions of iOS.
+NOTE: MapKit was only tested on iOS 4.0+. Due to changes in thread-safety of UIKit, it may not function properly on earlier versions of iOS.
 
 Usage
 -----
 
 To use MapKit in your project, simply drag the contents of the `Sources` folder into your Xcode project.
+
+Attributions
+------------
+
+Using pin clipart from [SweetClipart.com](http://sweetclipart.com/)
 
 License
 -------

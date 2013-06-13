@@ -15,6 +15,11 @@
 		2899E5220DE3E06400AC0155 /* SampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* SampleViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* SampleViewController.m */; };
+		5825BD7C1765CF4B0007528C /* MRBuiltinGPSDotProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825BD7B1765CF4B0007528C /* MRBuiltinGPSDotProvider.m */; };
+		5825BD7E1765D4180007528C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5825BD7D1765D4180007528C /* CoreLocation.framework */; };
+		584DAB7D1760CD1A000AA1CD /* CurrentLocationPin.png in Resources */ = {isa = PBXBuildFile; fileRef = 584DAB7C1760CD1A000AA1CD /* CurrentLocationPin.png */; };
+		58F8CF081760809400F81960 /* MRBuiltinPinProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8CF071760809400F81960 /* MRBuiltinPinProvider.m */; };
+		83FFBEB515CE046C009A64FA /* MRMQOTileProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */; };
 		C965CECC1222B2A3005CF012 /* MRMapTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C965CEC31222B2A3005CF012 /* MRMapTypes.m */; };
 		C965CECD1222B2A3005CF012 /* MRMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = C965CEC51222B2A3005CF012 /* MRMapView.m */; };
 		C965CECE1222B2A3005CF012 /* MRMercatorProjection.m in Sources */ = {isa = PBXBuildFile; fileRef = C965CEC71222B2A3005CF012 /* MRMercatorProjection.m */; };
@@ -36,6 +41,17 @@
 		28D7ACF70DDB3853001CB0EB /* SampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Sample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample_Prefix.pch; sourceTree = "<group>"; };
+		5825BD761765B9680007528C /* MRArtifactController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRArtifactController.h; sourceTree = "<group>"; };
+		5825BD7A1765CF4B0007528C /* MRBuiltinGPSDotProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBuiltinGPSDotProvider.h; sourceTree = "<group>"; };
+		5825BD7B1765CF4B0007528C /* MRBuiltinGPSDotProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBuiltinGPSDotProvider.m; sourceTree = "<group>"; };
+		5825BD7D1765D4180007528C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		584DAB7C1760CD1A000AA1CD /* CurrentLocationPin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CurrentLocationPin.png; sourceTree = "<group>"; };
+		58F8CF0517607CC500F81960 /* MRPinProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRPinProvider.h; sourceTree = "<group>"; };
+		58F8CF061760809400F81960 /* MRBuiltinPinProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBuiltinPinProvider.h; sourceTree = "<group>"; };
+		58F8CF071760809400F81960 /* MRBuiltinPinProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBuiltinPinProvider.m; sourceTree = "<group>"; };
+		58F8CF0C1760829C00F81960 /* MRPin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRPin.h; sourceTree = "<group>"; };
+		83FFBEB315CE046C009A64FA /* MRMQOTileProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMQOTileProvider.h; sourceTree = "<group>"; };
+		83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMQOTileProvider.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Sample-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Sample-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		C965CEC21222B2A3005CF012 /* MRMapTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMapTypes.h; sourceTree = "<group>"; };
 		C965CEC31222B2A3005CF012 /* MRMapTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMapTypes.m; sourceTree = "<group>"; };
@@ -57,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5825BD7E1765D4180007528C /* CoreLocation.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -111,8 +128,9 @@
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Sample-Info.plist */,
 				2899E5210DE3E06400AC0155 /* SampleViewController.xib */,
+				584DAB7C1760CD1A000AA1CD /* CurrentLocationPin.png */,
 			);
-			name = Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
@@ -122,25 +140,51 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				C997167B1220C4AD00022812 /* QuartzCore.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				5825BD7D1765D4180007528C /* CoreLocation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5825BD781765BE7E0007528C /* Tile Providers */ = {
+			isa = PBXGroup;
+			children = (
+				C965CEC81222B2A3005CF012 /* MROSMTileProvider.h */,
+				C965CEC91222B2A3005CF012 /* MROSMTileProvider.m */,
+				83FFBEB315CE046C009A64FA /* MRMQOTileProvider.h */,
+				83FFBEB415CE046C009A64FA /* MRMQOTileProvider.m */,
+			);
+			name = "Tile Providers";
+			sourceTree = "<group>";
+		};
+		5825BD791765BE910007528C /* Artifact Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				58F8CF0C1760829C00F81960 /* MRPin.h */,
+				58F8CF0517607CC500F81960 /* MRPinProvider.h */,
+				58F8CF061760809400F81960 /* MRBuiltinPinProvider.h */,
+				58F8CF071760809400F81960 /* MRBuiltinPinProvider.m */,
+				5825BD7A1765CF4B0007528C /* MRBuiltinGPSDotProvider.h */,
+				5825BD7B1765CF4B0007528C /* MRBuiltinGPSDotProvider.m */,
+			);
+			name = "Artifact Controllers";
 			sourceTree = "<group>";
 		};
 		C965CEC11222B2A3005CF012 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				5825BD791765BE910007528C /* Artifact Controllers */,
+				5825BD781765BE7E0007528C /* Tile Providers */,
 				C965CEC21222B2A3005CF012 /* MRMapTypes.h */,
 				C965CEC31222B2A3005CF012 /* MRMapTypes.m */,
 				C965CEC41222B2A3005CF012 /* MRMapView.h */,
 				C965CEC51222B2A3005CF012 /* MRMapView.m */,
 				C965CEC61222B2A3005CF012 /* MRMercatorProjection.h */,
 				C965CEC71222B2A3005CF012 /* MRMercatorProjection.m */,
-				C965CEC81222B2A3005CF012 /* MROSMTileProvider.h */,
-				C965CEC91222B2A3005CF012 /* MROSMTileProvider.m */,
 				C965CECA1222B2A3005CF012 /* MRProjection.h */,
 				C9B63CED122326F40015C73E /* MRTileCache.h */,
 				C9B63CEE122326F40015C73E /* MRTileCache.m */,
 				C965CECB1222B2A3005CF012 /* MRTileProvider.h */,
+				5825BD761765B9680007528C /* MRArtifactController.h */,
 			);
 			name = Sources;
 			path = ../Sources;
@@ -183,7 +227,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Sample" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -211,6 +255,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* SampleViewController.xib in Resources */,
+				584DAB7D1760CD1A000AA1CD /* CurrentLocationPin.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +274,9 @@
 				C965CECE1222B2A3005CF012 /* MRMercatorProjection.m in Sources */,
 				C965CECF1222B2A3005CF012 /* MROSMTileProvider.m in Sources */,
 				C9B63CEF122326F40015C73E /* MRTileCache.m in Sources */,
+				83FFBEB515CE046C009A64FA /* MRMQOTileProvider.m in Sources */,
+				58F8CF081760809400F81960 /* MRBuiltinPinProvider.m in Sources */,
+				5825BD7C1765CF4B0007528C /* MRBuiltinGPSDotProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,12 +287,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sample_Prefix.pch;
-				INFOPLIST_FILE = "Sample-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Resources/Sample-Info.plist";
 				PRODUCT_NAME = Sample;
 			};
 			name = Debug;
@@ -253,10 +302,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sample_Prefix.pch;
-				INFOPLIST_FILE = "Sample-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Resources/Sample-Info.plist";
 				PRODUCT_NAME = Sample;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -266,12 +316,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
@@ -282,12 +338,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				RUN_CLANG_STATIC_ANALYZER = YES;
