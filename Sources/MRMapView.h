@@ -39,7 +39,7 @@
 
 
 // tileProvider must not be nil
-- (id)initWithFrame:(CGRect)frame tileProvider:(id < MRTileProvider >)tileProvider;
+- (instancetype)initWithFrame:(CGRect)frame tileProvider:(id < MRTileProvider >)tileProvider;
 
 - (void)setCenter:(MRMapCoordinate)coord animated:(BOOL)anim;
 - (void)setZoomLevel:(NSUInteger)zoom animated:(BOOL)anim;

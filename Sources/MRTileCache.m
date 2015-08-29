@@ -34,7 +34,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 
 #define kDefaultMaxCacheSize 1000
 
-- (id)initWithCacheDirectory:(NSString *)aPath {
+- (instancetype)initWithCacheDirectory:(NSString *)aPath {
 	NSParameterAssert (aPath != nil);
 	
 	self = [super init];

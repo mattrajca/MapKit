@@ -43,7 +43,7 @@
 @synthesize mapProjection = _mapProjection;
 @dynamic center, zoomLevel;
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
 		[self commonInit];
@@ -51,7 +51,7 @@
 	return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];
 	if (self) {
 		[self commonInit];
@@ -59,7 +59,7 @@
 	return self;
 }
 
-- (id)initWithFrame:(CGRect)frame tileProvider:(id < MRTileProvider >)tileProvider {
+- (instancetype)initWithFrame:(CGRect)frame tileProvider:(id < MRTileProvider >)tileProvider {
 	NSParameterAssert (tileProvider != nil);
 	
 	self = [self initWithFrame:frame];
@@ -211,7 +211,7 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 
 #define kDay 60 * 60 * 24
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
 		_cache = [[MRTileCache alloc] initWithCacheDirectory:[self cacheDirectory]];
