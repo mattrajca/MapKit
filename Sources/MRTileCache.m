@@ -137,9 +137,9 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 		NSArray *contents = self.cacheContents;
 		NSUInteger count = contents.count;
 		
-		if (count >= _maxCacheSize) {
+		if (count >= self.maxCacheSize) {
 			// free so we have 2/3 of the max size
-			for (NSUInteger n = 0; n < (count - (_maxCacheSize * 2 / 3)); n++) {
+			for (NSUInteger n = 0; n < (count - (self.maxCacheSize * 2 / 3)); n++) {
 				NSString *path = contents[n][@"path"];
 				[fm removeItemAtPath:path error:nil];
 			}
