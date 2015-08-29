@@ -66,7 +66,7 @@
 	self.showsHorizontalScrollIndicator = NO;
 	self.showsVerticalScrollIndicator = NO;
 	self.scrollsToTop = NO;
-	self.bounces = NO;
+	self.bounces = YES;
 	
 	self.mapProjection = [MRMercatorProjection new];
 }
