@@ -7,7 +7,6 @@
 
 #import "MRMapTypes.h"
 
-@class MRMapBaseView;
 @protocol MRTileProvider, MRProjection;
 
 /*
