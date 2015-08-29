@@ -30,7 +30,7 @@
 @synthesize cacheDirectory = _cacheDirectory;
 @synthesize flushing = _flushing;
 
-static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
+static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 
 #define kDefaultMaxCacheSize 1000
 
@@ -46,7 +46,7 @@ static NSString *const kTileKeyFormat = @"%d_%d_%d.png";
 }
 
 - (NSString *)tileKeyForX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
-	return [NSString stringWithFormat:kTileKeyFormat, x, y, zoom];
+	return [NSString stringWithFormat:kTileKeyFormat, (unsigned long)x, (unsigned long)y, (unsigned long)zoom];
 }
 
 - (NSString *)pathForTileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {

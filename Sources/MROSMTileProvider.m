@@ -12,7 +12,7 @@
 @implementation MROSMTileProvider
 
 - (NSURL *)tileURLForTile:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
-	NSString *url = [NSString stringWithFormat:@"http://tile.openstreetmap.org/%d/%d/%d.png", zoom, x, y];
+	NSString *url = [NSString stringWithFormat:@"http://tile.openstreetmap.org/%ld/%ld/%ld.png", (unsigned long)zoom, (unsigned long)x, (unsigned long)y];
 	
 	return [NSURL URLWithString:url];
 }
