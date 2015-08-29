@@ -12,7 +12,7 @@
 	MRMapView *_mapView;
 }
 
-@property (nonatomic, retain) IBOutlet MRMapView *mapView;
+@property (nonatomic, strong) IBOutlet MRMapView *mapView;
 
 - (IBAction)locateChicago:(id)sender;
 

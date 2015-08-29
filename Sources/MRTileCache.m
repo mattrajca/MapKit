@@ -63,9 +63,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 	
 	NSString *path = [self pathForTileAtX:x y:y zoomLevel:zoom];
 	NSData *data = [fm contentsAtPath:path];
-	
-	[fm release];
-	
+
 	if (!data)
 		return nil;
 	
@@ -102,10 +100,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 	
 	NSTimeInterval tz = [[NSTimeZone systemTimeZone] secondsFromGMT];
 	
-	NSDate *modificationDate = [[cal dateFromComponents:comps] dateByAddingTimeInterval:tz];
-	[comps release];
-	
-	return modificationDate;
+	return [[cal dateFromComponents:comps] dateByAddingTimeInterval:tz];
 }
 
 - (NSArray *)cacheContents {
@@ -124,8 +119,6 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 						  modificationDate, @"modificationDate", nil]];
 	}
 	
-	[fm release];
-	
 	[files sortUsingComparator:^(id path1, id path2) {
 		return [[path1 objectForKey:@"modificationDate"] compare:
 				[path2 objectForKey:@"modificationDate"]];
@@ -142,34 +135,24 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 }
 
 - (void)flushCachesThread {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	_flushing = YES;
-	
-	NSFileManager *fm = [[NSFileManager alloc] init];
-	
-	NSArray *contents = [self cacheContents];
-	NSUInteger count = [contents count];
-	
-	if (count >= _maxCacheSize) {
-		// free so we have 2/3 of the max size
-		for (NSUInteger n = 0; n < (count - (_maxCacheSize * 2 / 3)); n++) {
-			NSString *path = [[contents objectAtIndex:n] valueForKey:@"path"];
-			[fm removeItemAtPath:path error:nil];
+	@autoreleasepool {
+		_flushing = YES;
+		
+		NSFileManager *fm = [[NSFileManager alloc] init];
+		
+		NSArray *contents = [self cacheContents];
+		NSUInteger count = [contents count];
+		
+		if (count >= _maxCacheSize) {
+			// free so we have 2/3 of the max size
+			for (NSUInteger n = 0; n < (count - (_maxCacheSize * 2 / 3)); n++) {
+				NSString *path = [[contents objectAtIndex:n] valueForKey:@"path"];
+				[fm removeItemAtPath:path error:nil];
+			}
 		}
-	}
-	
-	[fm release];
-	
-	_flushing = NO;
-	
-	[pool release];
-}
 
-- (void)dealloc {
-	[_cacheDirectory release];
-	
-	[super dealloc];
+		_flushing = NO;
+	}
 }
 
 @end

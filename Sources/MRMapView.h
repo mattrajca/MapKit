@@ -29,10 +29,10 @@
   If you don't use the - initWithFrame:tileProvider: initializer, the
   tile provider will be nil. It MUST be set in order to display any tiles
 */
-@property (nonatomic, retain) id < MRTileProvider > tileProvider;
+@property (nonatomic, strong) id < MRTileProvider > tileProvider;
 
 // The default projection is MRMercatorProjection
-@property (nonatomic, retain) id < MRProjection > mapProjection;
+@property (nonatomic, strong) id < MRProjection > mapProjection;
 
 @property (nonatomic, assign) MRMapCoordinate center; // animated
 @property (nonatomic, assign) NSUInteger zoomLevel;   // animated

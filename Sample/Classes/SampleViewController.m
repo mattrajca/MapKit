@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	_mapView.tileProvider = [[MROSMTileProvider new] autorelease];
+	_mapView.tileProvider = [MROSMTileProvider new];
 	
 	[self loadState];
 }
@@ -73,12 +73,6 @@
 - (IBAction)locateChicago:(id)sender {
 	_mapView.zoomLevel = 10;
 	_mapView.center = MRMapCoordinateMake(41.85f, -87.65f);
-}
-
-- (void)dealloc {
-	[_mapView release];
-	
-    [super dealloc];
 }
 
 @end
