@@ -7,12 +7,9 @@
 
 @class MRMapView;
 
-@interface SampleViewController : UIViewController {
-  @private
-	MRMapView *_mapView;
-}
+@interface SampleViewController : UIViewController
 
-@property (nonatomic, strong) IBOutlet MRMapView *mapView;
+@property (nonatomic, weak) IBOutlet MRMapView *mapView;
 
 - (IBAction)locateChicago:(id)sender;
 

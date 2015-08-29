@@ -44,6 +44,10 @@
 											   object:nil];
 }
 
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)saveState:(id)sender {
 	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
 	[defs setInteger:_mapView.zoomLevel forKey:@"zoom"];
