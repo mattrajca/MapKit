@@ -13,12 +13,12 @@
 
 @property (nonatomic, readonly, copy) NSArray *cacheContents;
 
-@property (getter=isFlushing) BOOL flushing;
-
 @end
 
 
-@implementation MRTileCache
+@implementation MRTileCache {
+	NSOperationQueue *_flushQueue;
+}
 
 static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 
@@ -50,7 +50,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 }
 
 - (NSData *)tileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
-	if (self.flushing)
+	if (self.isFlushing)
 		return nil;
 	
 	NSFileManager *fm = [[NSFileManager alloc] init];
@@ -65,7 +65,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 }
 
 - (void)setTile:(NSData *)data x:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom {
-	if (self.flushing)
+	if (self.isFlushing)
 		return;
 	
 	NSString *path = [self pathForTileAtX:x y:y zoomLevel:zoom];
@@ -121,22 +121,25 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 	return files;
 }
 
-- (void)flushOldCaches {
-	if (self.flushing)
-		return;
-	
-	[NSThread detachNewThreadSelector:@selector(flushCachesThread) toTarget:self withObject:nil];
+- (BOOL)isFlushing {
+	return _flushQueue.operationCount > 0;
 }
 
-- (void)flushCachesThread {
-	@autoreleasepool {
-		self.flushing = YES;
-		
+- (void)flushOldCaches {
+	if (self.isFlushing)
+		return;
+
+	if (!_flushQueue) {
+		_flushQueue = [NSOperationQueue new];
+		_flushQueue.maxConcurrentOperationCount = 1;
+	}
+	
+	[_flushQueue addOperationWithBlock:^{
 		NSFileManager *fm = [[NSFileManager alloc] init];
-		
+
 		NSArray *contents = self.cacheContents;
 		NSUInteger count = contents.count;
-		
+
 		if (count >= self.maxCacheSize) {
 			// free so we have 2/3 of the max size
 			for (NSUInteger n = 0; n < (count - (self.maxCacheSize * 2 / 3)); n++) {
@@ -144,9 +147,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 				[fm removeItemAtPath:path error:nil];
 			}
 		}
-
-		self.flushing = NO;
-	}
+	}];
 }
 
 @end
