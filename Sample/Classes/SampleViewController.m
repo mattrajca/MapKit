@@ -32,8 +32,7 @@
 
 - (void)loadState {
 	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-	[defs registerDefaults:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:1]
-													   forKey:@"zoom"]];
+	[defs registerDefaults:@{@"zoom": @1}];
 	
 	NSUInteger zoom = [defs integerForKey:@"zoom"];
 	[_mapView setZoomLevel:zoom animated:NO];

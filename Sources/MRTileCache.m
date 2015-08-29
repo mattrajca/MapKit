@@ -83,23 +83,23 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 	struct tm *date;
 	struct stat attrib;
 	
-	stat([aPath fileSystemRepresentation], &attrib);
+	stat(aPath.fileSystemRepresentation, &attrib);
 	date = gmtime(&(attrib.st_mtime));
 	
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
-	[comps setSecond:date->tm_sec];
-	[comps setMinute:date->tm_min];
-	[comps setHour:date->tm_hour];
-	[comps setDay:date->tm_mday];
-	[comps setMonth:date->tm_mon + 1];
-	[comps setYear:date->tm_year + 1900];
+	comps.second = date->tm_sec;
+	comps.minute = date->tm_min;
+	comps.hour = date->tm_hour;
+	comps.day = date->tm_mday;
+	comps.month = date->tm_mon + 1;
+	comps.year = date->tm_year + 1900;
 	
 	static NSCalendar *cal;
 	
 	if (!cal)
 		cal = [NSCalendar currentCalendar];
 	
-	NSTimeInterval tz = [[NSTimeZone systemTimeZone] secondsFromGMT];
+	NSTimeInterval tz = [NSTimeZone systemTimeZone].secondsFromGMT;
 	
 	return [[cal dateFromComponents:comps] dateByAddingTimeInterval:tz];
 }
@@ -109,20 +109,19 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 	NSString *cacheDirectory = self.cacheDirectory;
     NSArray *contents = [fm contentsOfDirectoryAtPath:cacheDirectory error:nil];
 		
-	NSMutableArray *files = [NSMutableArray arrayWithCapacity:[contents count]];
+	NSMutableArray *files = [NSMutableArray arrayWithCapacity:contents.count];
 	
 	for (NSString *path in contents) {
 		NSString *fPath = [cacheDirectory stringByAppendingPathComponent:path];
 		NSDate *modificationDate = [self modificationDateForItemAtPath:fPath];
 		
-		[files addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						  fPath, @"path",
-						  modificationDate, @"modificationDate", nil]];
+		[files addObject:@{@"path": fPath,
+						  @"modificationDate": modificationDate}];
 	}
 	
 	[files sortUsingComparator:^(id path1, id path2) {
-		return [[path1 objectForKey:@"modificationDate"] compare:
-				[path2 objectForKey:@"modificationDate"]];
+		return [path1[@"modificationDate"] compare:
+				path2[@"modificationDate"]];
 	}];
 	
 	return files;
@@ -141,13 +140,13 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 		
 		NSFileManager *fm = [[NSFileManager alloc] init];
 		
-		NSArray *contents = [self cacheContents];
-		NSUInteger count = [contents count];
+		NSArray *contents = self.cacheContents;
+		NSUInteger count = contents.count;
 		
 		if (count >= _maxCacheSize) {
 			// free so we have 2/3 of the max size
 			for (NSUInteger n = 0; n < (count - (_maxCacheSize * 2 / 3)); n++) {
-				NSString *path = [[contents objectAtIndex:n] valueForKey:@"path"];
+				NSString *path = [contents[n] valueForKey:@"path"];
 				[fm removeItemAtPath:path error:nil];
 			}
 		}

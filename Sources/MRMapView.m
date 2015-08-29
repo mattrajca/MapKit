@@ -81,15 +81,15 @@
 }
 
 - (void)configureScrollView {
-	self.contentSize = [_tileProvider tileSize];
+	self.contentSize = _tileProvider.tileSize;
 	self.minimumZoomScale = 1.0f;
-	self.maximumZoomScale = MRMapScaleFromZoomLevel([_tileProvider maxZoomLevel]);
+	self.maximumZoomScale = MRMapScaleFromZoomLevel(_tileProvider.maxZoomLevel);
 	self.delegate = _tileProvider ? self : nil;
 }
 
 - (void)configureLayers {
 	if (!_baseView) {
-		_baseView = [[MRMapBaseView alloc] initWithFrame:[self bounds]];
+		_baseView = [[MRMapBaseView alloc] initWithFrame:self.bounds];
 		_baseView.multipleTouchEnabled = YES;
 		
 		[self insertSubview:_baseView atIndex:0];
@@ -129,23 +129,23 @@
 	UITouch *touch = [touches anyObject];
 	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
 	
-	if ([touches count] == 1 && touch.tapCount == 2) {
+	if (touches.count == 1 && touch.tapCount == 2) {
 		// zoom in
-		if (zoom < [_tileProvider maxZoomLevel]) {
+		if (zoom < _tileProvider.maxZoomLevel) {
 			CGPoint pt = [touch locationInView:self];
 			
 			MRMapCoordinate coord = [_mapProjection coordinateForPoint:pt
 															 zoomLevel:zoom
-															  tileSize:[_tileProvider tileSize]];
+															  tileSize:_tileProvider.tileSize];
 			zoom++;
 			
 			[self setCenter:coord animated:NO];
 			self.zoomLevel = zoom;
 		}
 	}
-	else if ([touches count] == 2 && touch.tapCount == 1) {
+	else if (touches.count == 2 && touch.tapCount == 1) {
 		// zoom out
-		if (zoom > [_tileProvider minZoomLevel]) {
+		if (zoom > _tileProvider.minZoomLevel) {
 			self.zoomLevel = --zoom;
 		}
 	}
@@ -183,7 +183,7 @@
 	
 	return [_mapProjection coordinateForPoint:pt
 									zoomLevel:self.zoomLevel
-									 tileSize:[_tileProvider tileSize]];
+									 tileSize:_tileProvider.tileSize];
 }
 
 - (void)setCenter:(MRMapCoordinate)coord {
@@ -193,7 +193,7 @@
 - (void)setCenter:(MRMapCoordinate)coord animated:(BOOL)anim {
 	CGPoint pt = [_mapProjection pointForCoordinate:coord
 										  zoomLevel:self.zoomLevel
-										   tileSize:[_tileProvider tileSize]];
+										   tileSize:_tileProvider.tileSize];
 	
 	pt.x -= self.bounds.size.width / 2;
 	pt.y -= self.bounds.size.height / 2;
@@ -215,12 +215,12 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 - (instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
-		_cache = [[MRTileCache alloc] initWithCacheDirectory:[self cacheDirectory]];
+		_cache = [[MRTileCache alloc] initWithCacheDirectory:self.cacheDirectory];
 		
 		NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
 		NSDate *date = [defs valueForKey:kLastFlushedKey];
 		
-		if (!date || -[date timeIntervalSinceNow] > kDay) {
+		if (!date || -date.timeIntervalSinceNow > kDay) {
 			[_cache flushOldCaches];
 			
 			[defs setValue:[NSDate date] forKey:kLastFlushedKey];
@@ -233,10 +233,10 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 - (NSString *)cacheDirectory {
 	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 	
-	if (![dirs count])
+	if (!dirs.count)
 		return nil;
 	
-	NSString *path = [[dirs objectAtIndex:0] stringByAppendingPathComponent:@"Tiles"];
+	NSString *path = [dirs[0] stringByAppendingPathComponent:@"Tiles"];
 	
 	NSFileManager *fm = [[NSFileManager alloc] init];
 	
@@ -254,10 +254,10 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 
 - (void)configureLayer {
 	CATiledLayer *tiledLayer = (CATiledLayer *) self.layer;
-	tiledLayer.levelsOfDetail = [_tileProvider maxZoomLevel];
-	tiledLayer.levelsOfDetailBias = [_tileProvider maxZoomLevel];
+	tiledLayer.levelsOfDetail = _tileProvider.maxZoomLevel;
+	tiledLayer.levelsOfDetailBias = _tileProvider.maxZoomLevel;
 	
-	CGSize tileSize = [_tileProvider tileSize];
+	CGSize tileSize = _tileProvider.tileSize;
 	tiledLayer.tileSize = tileSize;
 	tiledLayer.frame = CGRectMake(0.0f, 0.0f, tileSize.width, tileSize.height);
 	
