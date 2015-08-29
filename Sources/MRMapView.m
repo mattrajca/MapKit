@@ -14,11 +14,7 @@
 #import "MRTileCache.h"
 #import "MRTileProvider.h"
 
-@interface MRMapBaseView : UIView {
-  @private
-	MRTileCache *_cache;
-	id < MRTileProvider > _tileProvider;
-}
+@interface MRMapBaseView : UIView
 
 @property (nonatomic, weak) id < MRTileProvider > tileProvider;
 
@@ -195,9 +191,9 @@
 @end
 
 
-@implementation MRMapBaseView
-
-@synthesize tileProvider;
+@implementation MRMapBaseView {
+	MRTileCache *_cache;
+}
 
 static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 
