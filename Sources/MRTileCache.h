@@ -7,7 +7,7 @@
 
 @interface MRTileCache : NSObject
 
-@property (assign) NSUInteger maxCacheSize; /* in tiles, default=1,000 */
+@property NSUInteger maxCacheSize; /* in tiles, default=1,000 */
 @property (readonly) NSString *cacheDirectory;
 
 - (instancetype)initWithCacheDirectory:(NSString *)aPath NS_DESIGNATED_INITIALIZER;

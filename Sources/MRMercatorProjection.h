@@ -7,8 +7,6 @@
 
 #import "MRProjection.h"
 
-@interface MRMercatorProjection : NSObject < MRProjection > {
-
-}
+@interface MRMercatorProjection : NSObject < MRProjection >
 
 @end
