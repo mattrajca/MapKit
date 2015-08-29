@@ -26,7 +26,7 @@
 }
 
 - (CGSize)tileSize {
-	return CGSizeMake(256.0f, 256.0f);
+	return CGSizeMake(256, 256);
 }
 
 @end

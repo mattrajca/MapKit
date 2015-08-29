@@ -9,8 +9,6 @@
 
 /* An OpenStreetMap tile provider */
 
-@interface MROSMTileProvider : NSObject < MRTileProvider > {
-
-}
+@interface MROSMTileProvider : NSObject < MRTileProvider >
 
 @end
