@@ -106,9 +106,6 @@
 		frameToCenter.origin.y = 0;
 	
 	_baseView.frame = frameToCenter;
-
-	// Support higher resolution displays
-	_baseView.contentScaleFactor = [UIScreen mainScreen].scale;
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
