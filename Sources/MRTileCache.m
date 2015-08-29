@@ -33,7 +33,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 	
 	self = [super init];
 	if (self) {
-		self.maxCacheSize = kDefaultMaxCacheSize;
+		_maxCacheSize = kDefaultMaxCacheSize;
 		_cacheDirectory = [aPath copy];
 	}
 	return self;
