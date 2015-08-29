@@ -10,17 +10,7 @@
 #import "MRMapView.h"
 #import "MROSMTileProvider.h"
 
-@interface SampleViewController ()
-
-- (void)loadState;
-- (void)saveState:(id)sender;
-
-@end
-
-
 @implementation SampleViewController
-
-@synthesize mapView = _mapView;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];

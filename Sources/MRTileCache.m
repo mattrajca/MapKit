@@ -108,13 +108,14 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 		NSString *fPath = [cacheDirectory stringByAppendingPathComponent:path];
 		NSDate *modificationDate = [self modificationDateForItemAtPath:fPath];
 		
-		[files addObject:@{@"path": fPath,
-						  @"modificationDate": modificationDate}];
+		[files addObject:@{
+			@"path": fPath,
+			@"modificationDate": modificationDate
+		}];
 	}
 	
-	[files sortUsingComparator:^(id path1, id path2) {
-		return [path1[@"modificationDate"] compare:
-				path2[@"modificationDate"]];
+	[files sortUsingComparator:^(NSDictionary *path1, NSDictionary *path2) {
+		return [path1[@"modificationDate"] compare:path2[@"modificationDate"]];
 	}];
 	
 	return files;
@@ -139,7 +140,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 		if (count >= _maxCacheSize) {
 			// free so we have 2/3 of the max size
 			for (NSUInteger n = 0; n < (count - (_maxCacheSize * 2 / 3)); n++) {
-				NSString *path = [contents[n] valueForKey:@"path"];
+				NSString *path = contents[n][@"path"];
 				[fm removeItemAtPath:path error:nil];
 			}
 		}

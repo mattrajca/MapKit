@@ -29,15 +29,6 @@
 @end
 
 
-@interface MRMapView ()
-
-- (void)commonInit;
-- (void)configureScrollView;
-- (void)configureLayers;
-
-@end
-
-
 @implementation MRMapView
 
 @synthesize tileProvider = _tileProvider;
@@ -273,9 +264,8 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 }
 
 - (void)drawRect:(CGRect)rect {
-	if (!_tileProvider) {
+	if (!_tileProvider)
 		return;
-	}
 	
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	
