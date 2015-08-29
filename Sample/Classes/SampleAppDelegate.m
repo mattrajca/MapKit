@@ -11,11 +11,9 @@
 
 @implementation SampleAppDelegate
 
-@synthesize window, viewController;
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	window.rootViewController = viewController;
-	[window makeKeyAndVisible];
+	_window.rootViewController = _viewController;
+	[_window makeKeyAndVisible];
 	
 	return YES;
 }

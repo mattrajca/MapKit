@@ -7,11 +7,7 @@
 
 @class SampleViewController;
 
-@interface SampleAppDelegate : NSObject < UIApplicationDelegate > {
-  @private
-    UIWindow *window;
-    SampleViewController *viewController;
-}
+@interface SampleAppDelegate : NSObject < UIApplicationDelegate >
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) IBOutlet SampleViewController *viewController;
