@@ -218,12 +218,12 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 }
 
 - (NSString *)cacheDirectory {
-	NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+	NSArray<NSString *> *dirs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 	
 	if (!dirs.count)
 		return nil;
 	
-	NSString *path = [dirs[0] stringByAppendingPathComponent:@"Tiles"];
+	NSString *path = [dirs.firstObject stringByAppendingPathComponent:@"Tiles"];
 	
 	NSFileManager *fm = [[NSFileManager alloc] init];
 	
@@ -246,7 +246,7 @@ static NSString *const kLastFlushedKey = @"lastFlushedTileCache";
 	
 	CGSize tileSize = _tileProvider.tileSize;
 	tiledLayer.tileSize = tileSize;
-	tiledLayer.frame = CGRectMake(0.0f, 0.0f, tileSize.width, tileSize.height);
+	tiledLayer.frame = CGRectMake(0, 0, tileSize.width, tileSize.height);
 	
 	[self.layer setNeedsDisplay];
 }
