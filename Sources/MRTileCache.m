@@ -15,7 +15,8 @@
 - (NSString *)pathForTileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
 
 - (NSDate *)modificationDateForItemAtPath:(NSString *)aPath;
-- (NSArray *)cacheContents;
+
+@property (nonatomic, readonly, copy) NSArray *cacheContents;
 
 - (void)flushCachesThread;
 

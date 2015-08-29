@@ -23,7 +23,8 @@
 @property (nonatomic, weak) id < MRTileProvider > tileProvider;
 
 - (void)configureLayer;
-- (NSString *)cacheDirectory;
+
+@property (nonatomic, readonly, copy) NSString *cacheDirectory;
 
 @end
 

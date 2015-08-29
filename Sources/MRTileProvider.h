@@ -9,9 +9,9 @@
 
 - (NSURL *)tileURLForTile:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
 
-- (NSUInteger)minZoomLevel;
-- (NSUInteger)maxZoomLevel;
+@property (nonatomic, readonly) NSUInteger minZoomLevel;
+@property (nonatomic, readonly) NSUInteger maxZoomLevel;
 
-- (CGSize)tileSize;
+@property (nonatomic, readonly) CGSize tileSize;
 
 @end
