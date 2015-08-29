@@ -29,10 +29,10 @@
 @end
 
 
-@implementation MRMapView
+@implementation MRMapView {
+	MRMapBaseView *_baseView;
+}
 
-@synthesize tileProvider = _tileProvider;
-@synthesize mapProjection = _mapProjection;
 @dynamic center, zoomLevel;
 
 - (instancetype)initWithFrame:(CGRect)frame {

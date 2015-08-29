@@ -17,13 +17,7 @@
   The QuartzCore framework must also be linked against in order to use MRMapView
 */
 
-@interface MRMapView : UIScrollView < UIScrollViewDelegate > {
-  @private
-	MRMapBaseView *_baseView;
-	
-	id < MRTileProvider > _tileProvider;
-	id < MRProjection > _mapProjection;
-}
+@interface MRMapView : UIScrollView < UIScrollViewDelegate >
 
 /*
   If you don't use the - initWithFrame:tileProvider: initializer, the
