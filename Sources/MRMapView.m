@@ -25,6 +25,10 @@
 @end
 
 
+@interface MRMapView () <UIScrollViewDelegate>
+@end
+
+
 @implementation MRMapView {
 	MRMapBaseView *_baseView;
 }
