@@ -5,12 +5,7 @@
 //  Copyright Matt Rajca 2010. All rights reserved.
 //
 
-@interface MRTileCache : NSObject {
-  @private
-	NSUInteger _maxCacheSize;
-	NSString *_cacheDirectory;
-	BOOL _flushing;
-}
+@interface MRTileCache : NSObject
 
 @property (assign) NSUInteger maxCacheSize; /* in tiles, default=1,000 */
 @property (readonly) NSString *cacheDirectory;
