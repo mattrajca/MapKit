@@ -82,6 +82,7 @@
 	if (!_baseView) {
 		_baseView = [[MRMapBaseView alloc] initWithFrame:self.bounds];
 		_baseView.multipleTouchEnabled = YES;
+		_baseView.translatesAutoresizingMaskIntoConstraints = NO;
 		
 		[self insertSubview:_baseView atIndex:0];
 	}
@@ -107,7 +108,7 @@
 	_baseView.frame = frameToCenter;
 
 	// Support higher resolution displays
-	_baseView.contentScaleFactor = 1.0f / [UIScreen mainScreen].scale;
+	_baseView.contentScaleFactor = [UIScreen mainScreen].scale;
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
