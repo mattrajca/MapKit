@@ -11,25 +11,14 @@
 
 @interface MRTileCache ()
 
-- (NSString *)tileKeyForX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
-- (NSString *)pathForTileAtX:(NSUInteger)x y:(NSUInteger)y zoomLevel:(NSUInteger)zoom;
-
-- (NSDate *)modificationDateForItemAtPath:(NSString *)aPath;
-
 @property (nonatomic, readonly, copy) NSArray *cacheContents;
 
-- (void)flushCachesThread;
-
-@property (readonly) BOOL flushing;
+@property (getter=isFlushing) BOOL flushing;
 
 @end
 
 
 @implementation MRTileCache
-
-@synthesize maxCacheSize = _maxCacheSize;
-@synthesize cacheDirectory = _cacheDirectory;
-@synthesize flushing = _flushing;
 
 static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 
@@ -140,7 +129,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 
 - (void)flushCachesThread {
 	@autoreleasepool {
-		_flushing = YES;
+		self.flushing = YES;
 		
 		NSFileManager *fm = [[NSFileManager alloc] init];
 		
@@ -155,7 +144,7 @@ static NSString *const kTileKeyFormat = @"%ld_%ld_%ld.png";
 			}
 		}
 
-		_flushing = NO;
+		self.flushing = NO;
 	}
 }
 
