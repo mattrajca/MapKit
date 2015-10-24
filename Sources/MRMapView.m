@@ -115,20 +115,18 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	[super touchesEnded:touches withEvent:event];
 	
-	UITouch *touch = [touches anyObject];
+	UITouch *const touch = [touches anyObject];
 	NSUInteger zoom = MRMapZoomLevelFromScale(self.zoomScale);
 	
 	if (touches.count == 1 && touch.tapCount == 2) {
 		// zoom in
 		if (zoom < _tileProvider.maxZoomLevel) {
-			CGPoint pt = [touch locationInView:self];
+			const CGPoint point = [touch locationInView:self];
 			
-			MRMapCoordinate coord = [_mapProjection coordinateForPoint:pt
-															 zoomLevel:zoom
-															  tileSize:_tileProvider.tileSize];
+			MRMapCoordinate coord = [_mapProjection coordinateForPoint:point zoomLevel:zoom tileSize:_tileProvider.tileSize];
 			zoom++;
 			
-			[self setCenter:coord animated:NO];
+			[self setCenter:coord animated:YES];
 			self.zoomLevel = zoom;
 		}
 	}
